@@ -16,12 +16,12 @@ def get_today():
 def get_week():
     today = date.today()
     day7 = date.today() + timedelta(days=7)
-    sql = "SELECT week_nr FROM calendar WHERE date > :today AND date < :day7 AND work_day = TRUE"
+    sql = "SELECT week_nr FROM calendar WHERE date > :today AND date < :day7 AND work_day = TRUE ORDER BY date"
     result = db.session.execute(sql, {"today":today, "day7":day7})
     return result.fetchone()[0]
 
 def get_next_week(week_nr, ndays):
-    sql = "SELECT date FROM calendar WHERE week_nr = :week_nr"
+    sql = "SELECT date FROM calendar WHERE week_nr = :week_nr ORDER BY date"
     result = db.session.execute(sql, {"week_nr":week_nr})
     day7 = result.fetchone()[0] + timedelta(days=ndays)
     sql = "SELECT week_nr FROM calendar WHERE date = :day7"
