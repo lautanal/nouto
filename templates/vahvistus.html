@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="text">
+
+        <h3 id="schedule-heading">TILAUKSEN VAHVISTUS</h3>
+        <br>
+
+        <form action="/sendcust" method="post" onkeydown="return event.key != 'Enter';">
+            Noudon tiedot:
+            <br>
+            <input type="hidden" name="noutolaji" value={{ noutolaji }}>
+            <input type="hidden" name="kuvaus" value={{ kuvaus }}>
+            <input type="hidden" name="date_id" value={{ date_id }}>
+            <input type="hidden" name="time_frame" value={{ time_frame }}>
+            <input type="hidden" name="hinta" value={{ hinta }}>
+            <input type="hidden" name="postinumero" value={{ postinumero }}>
+
+            {% if noutolaji == "1" %} 1 esine {% endif %}
+            {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
+            {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
+            <br>
+            {{ kuvaus }}
+    
+            <br><br>
+            Noudon ajankohta: {{viikonpv}} {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo: {{ klo }}
+            <br><br>
+            Hinta: {{ hinta }} €
+            <br><br>
+
+            Tilaajan tiedot:
+            <br><br>
+            Nimi:<br><input type="text" name="nimi" value={{ nimi }}><br>
+            Osoite:<br><input type="text" name="osoite" value={{ osoite }}><br>
+            Postinumero:<BR> {{ postinumero }} <br>
+            Postitoimipaikka:<BR><input type="text" name="kaupunki" value={{ kaupunki }}><br>
+            Puhelinnumero:<BR><input type="number" name="puhelin" value={{ puhelin }}><br>
+            Email: <br><input type="email" name="email" value={{ email }}><BR>
+            Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea><br><br>
+            
+            <input type="submit" value="Vahvista tilaus">
+                
+        </form>
+    </div>
+{% endblock content %}
