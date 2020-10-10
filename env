@@ -1,0 +1,2 @@
+DATABASE_URL=postgresql:///postgres
+SECRET_KEY=9ca2eb9ffcea5ec1f19fe5f26bb34d81

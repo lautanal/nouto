@@ -1,0 +1,13 @@
+{% extends "adlayout.html" %}
+{% block content %}
+    <form action="/adregister" method="post">
+        <h2>Luo uusi käyttäjätunnus</h2>
+        Tunnus: <input type="text" name="username">
+        <br><br>
+        <p>
+        Salasana: <input type="password" name="password">
+        <br><br>
+        <p>
+        <input type="submit" value="Luo tunnus">
+    </form>
+{% endblock content %}

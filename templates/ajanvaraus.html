@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="text">
+
+        <h3 id="schedule-heading">EASYNOUDON AJANVARAUS</h3>
+        <br>
+
+        <form action="/sendcust" method="post" onkeydown="return event.key != 'Enter';">
+            Noudon tiedot:
+            <br>
+            <input type="hidden" name="noutolaji" value={{ noutolaji }}>
+            <input type="hidden" name="kuvaus" value={{ kuvaus }}>
+            {% if noutolaji == "1" %} 1 esine {% endif %}
+            {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
+            {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
+            {% if noutolaji == "4" %} XL nouto {% endif %}
+            <br> {{ kuvaus }}
+
+            <br><br>
+            Noudon ajankohta:
+            <br><br>
+            <a href="/viikko/1/{{ noutolaji }}/{{ postinumero }}/{{ kuvaus }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr }} &nbsp &nbsp<a href="/viikko/2/{{ noutolaji }}/{{ postinumero }}/{{ kuvaus }}">Seuraava viikko --></a>
+            <br><br>
+
+            <table style="width:100%">
+                <colgroup>
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                </colgroup>
+                <tr>
+                    <th></th>
+                    <th>Ma</th>
+                    <th>Ti</th>
+                    <th>Ke</th>
+                    <th>To</th>
+                    <th>Pe</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>{{ paivat[0][0].day }}.{{ paivat[0][0].month }}.</th>
+                    <th>{{ paivat[1][0].day }}.{{ paivat[1][0].month }}.</th>
+                    <th>{{ paivat[2][0].day }}.{{ paivat[2][0].month }}.</th>
+                    <th>{{ paivat[3][0].day }}.{{ paivat[3][0].month }}.</th>
+                    <th>{{ paivat[4][0].day }}.{{ paivat[4][0].month }}.</th>
+                </tr>
+                <tr>
+                    <td>Klo 08-12</td>
+                    <td>{% if varattu[0] == 0 %} <input type="radio" name="aika" value="0" checked="checked"> {{ hinta[0]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[3] == 0 %} <input type="radio" name="aika" value="3"> {{ hinta[3]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[6] == 0 %} <input type="radio" name="aika" value="6"> {{ hinta[6]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[9] == 0 %} <input type="radio" name="aika" value="9"ß> {{ hinta[9]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[12] == 0 %} <input type="radio" name="aika" value="12"> {{ hinta[12]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>Klo 12-16</td>
+                    <td>{% if varattu[1] == 0 %} <input type="radio" name="aika" value="1"> {{ hinta[1]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[4] == 0 %} <input type="radio" name="aika" value="4"> {{ hinta[4]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[7] == 0 %} <input type="radio" name="aika" value="7"> {{ hinta[7]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[10] == 0 %} <input type="radio" name="aika" value="10"> {{ hinta[10]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[13] == 0 %} <input type="radio" name="aika" value="13"> {{ hinta[13]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                </tr> 
+                <tr></tr>
+                <tr>
+                    <td>Klo 16-19</td>
+                    <td>{% if varattu[2] == 0 %} <input type="radio" name="aika" value="2"> {{ hinta[2]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[5] == 0 %} <input type="radio" name="aika" value="5"> {{ hinta[5]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[8] == 0 %} <input type="radio" name="aika" value="8"> {{ hinta[8]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[11] == 0 %} <input type="radio" name="aika" value="11"> {{ hinta[11]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>{% if varattu[14] == 0 %} <input type="radio" name="aika" value="14"> {{ hinta[14]}}eur {% else %} TÄYNNÄ {% endif %}</td>
+                </tr>
+            </table>
+
+            <br><br>
+            Tilaajan tiedot:
+            <br><br>
+            Nimi:<br><input type="text" name="nimi"><br>
+            Osoite:<br><input type="text" name="osoite"><br>
+            Postinumero:<BR> {{ postinumero }} <input type="hidden" name="postinumero" value={{ postinumero }}><br>
+            Postitoimipaikka:<BR><input type="text" name="kaupunki"><br>
+            Puhelinnumero:<BR><input type="number" name="puhelin"><br>
+            Email: <br><input type="email" name="email"><BR>
+            Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea><br><br>
+            
+            <input type="submit" value="Lähetä">
+                
+        </form>
+    </div>
+{% endblock content %}

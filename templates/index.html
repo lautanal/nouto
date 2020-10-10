@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text">
+  <h1>Tervetuloa!</h1>
+  <p>
+    Tervetuloa Easynoudon ajanvaraukseen
+  </p>
+  <p>
+    Easynouto noutaa vaivattomasti turhat tavarasi kotoa tai toimistolta.
+  </p>
+  <br>
+  <h2>Tee tilaus:</h2>
+  <form action="/ajanvaraus" method="post" onkeydown="return event.key != 'Enter';">
+    <label for="noutolaji">Noudon tiedot:</label><br>
+    <select id="noutolaji" name="noutolaji">
+        <option value="1">Yksi esine - alk 59€</option>
+        <option value="2">2-3 esinettä - alk 99€</option>
+        <option value="3">30 min - alk 149€</option>
+        <option value="4">XL nouto - alk 399€</option>
+    </select>
+    <br><br>
+
+    Mitä noudetaan:<br><input type="text" name="kuvaus"><br>
+    <br>
+    Postinumero:<BR><input type="number" name="postinumero"><br>
+    <br>
+    
+    <input type="submit" value="Jatka ajanvaraukseen">
+</div>
+{% endblock content %}
