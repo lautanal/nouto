@@ -23,7 +23,8 @@ def get_week():
 def get_next_week(week_nr, ndays):
     sql = "SELECT date FROM calendar WHERE week_nr = :week_nr ORDER BY date"
     result = db.session.execute(sql, {"week_nr":week_nr})
-    day7 = result.fetchone()[0] + timedelta(days=ndays)
+    day7 = result.fetchone()[0]
+    day7 = day7 + timedelta(days=ndays)
     sql = "SELECT week_nr FROM calendar WHERE date = :day7"
     result = db.session.execute(sql, {"day7":day7})
     week_nr = result.fetchone()[0]

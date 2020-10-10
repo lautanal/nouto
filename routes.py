@@ -4,7 +4,7 @@ from datetime import date, timedelta
 import users, cal, customers, orders
 
 varattu = [0,0,1,0,1,0,1,0,1,0,0,0,0,0,0]
-hinta = [59,59,59,59,59]
+hinnat = [59,59,59,59,59]
 viikko_nr = 0
 viikko_delta = 0
 
@@ -21,7 +21,7 @@ def info():
 # Ajanvaraus
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
-    global varattu, hinta, viikko_nr, viikko_delta
+    global varattu, hinnat, viikko_nr, viikko_delta
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -31,51 +31,68 @@ def ajanvaraus():
     viikko_delta = 0
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
-        hinta = [59,59,59,59,59]
+        hinnat = [59,59,59,59,59]
     elif (noutolaji == "2"):
-        hinta = [99,99,99,99,99]
+        hinnat = [99,99,99,99,99]
     elif(noutolaji == "3"):
-        hinta = [149,149,149,149,149]
+        hinnat = [149,149,149,149,149]
     today_id = cal.get_today()
     for day in range(5):
         if (paivat[0][1] - today_id < 8):
-            hinta[day] += 20
+            hinnat[day] += 20
         elif (paivat[0][1] - today_id < 15):
-            hinta[day] += 10
+            hinnat[day] += 10
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinta=hinta)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
-# Viikon vaihto
-@app.route("/viikko/<int:muutos>/<string:noutolaji>/<string:postinumero>/<string:kuvaus>")
-def viikko(muutos, noutolaji, postinumero, kuvaus):
-    global varattu, hinta, viikko_nr, viikko_delta
-    if (muutos == 1):
-        if (viikko_delta > 0):
-            viikko_delta -= 1
-            viikko_nr = cal.get_next_week(viikko_nr, -7)
-    else:
-        if (viikko_delta < 8):
-            viikko_delta += 1
-            viikko_nr = cal.get_next_week(viikko_nr, 7)
+# Seuraava viikko
+@app.route("/seuraava/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def seuraavaviikko(noutolaji, kuvaus, postinumero):
+    global varattu, hinnat, viikko_nr, viikko_delta
+    if (viikko_delta < 8):
+        viikko_delta += 1
+        viikko_nr = cal.get_next_week(viikko_nr, 7)
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
-        hinta = [59,59,59,59,59]
+        hinnat = [59,59,59,59,59]
     elif (noutolaji == "2"):
-        hinta = [99,99,99,99,99]
+        hinnat = [99,99,99,99,99]
     elif(noutolaji == "3"):
-        hinta = [149,149,149,149,149]
+        hinnat = [149,149,149,149,149]
     today_id = cal.get_today()
     for day in range(5):
         if (paivat[0][1] - today_id < 8):
-            hinta[day] += 20
+            hinnat[day] += 20
         elif (paivat[0][1] - today_id < 15):
-            hinta[day] += 10
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinta=hinta)
+            hinnat[day] += 10
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
+
+# Edellinen viikko
+@app.route("/edellinen/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def edellinenviikko(noutolaji, kuvaus, postinumero):
+    global varattu, hinnat, viikko_nr, viikko_delta
+    if (viikko_delta > 0):
+        viikko_delta -= 1
+        viikko_nr = cal.get_next_week(viikko_nr, -7)
+    paivat = cal.get_days(viikko_nr)
+    if (noutolaji == "1"):
+        hinnat = [59,59,59,59,59]
+    elif (noutolaji == "2"):
+        hinnat = [99,99,99,99,99]
+    elif(noutolaji == "3"):
+        hinnat = [149,149,149,149,149]
+    today_id = cal.get_today()
+    for day in range(5):
+        if (paivat[0][1] - today_id < 8):
+            hinnat[day] += 20
+        elif (paivat[0][1] - today_id < 15):
+            hinnat[day] += 10
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
 # Vahvistus
 @app.route("/vahvistus", methods=["post"])
 def vahvistus():
-    global hinta
+    global hinnat
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -85,7 +102,7 @@ def vahvistus():
     date_id = paivat[daynr][1]
     date = cal.get_date(date_id)
     time_frame = int(tsel) - 3*daynr + 1
-    phinta = hinta[daynr]
+    phinta = hinnat[daynr]
 
     if (time_frame == 1):
          clock = "8-12"
@@ -110,7 +127,6 @@ def vahvistus():
 # Uusi varaus tietokantaan
 @app.route("/sendcust", methods=["post"])
 def sendcust():
-    global hinta
     ttype = request.form["noutolaji"]
     desc = request.form["kuvaus"]
     date_id = request.form["date_id"]
