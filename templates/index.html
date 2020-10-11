@@ -12,18 +12,20 @@
   <h2>Tee tilaus:</h2>
   <form action="/ajanvaraus" method="post" onkeydown="return event.key != 'Enter';">
     <label for="noutolaji">Noudon tiedot:</label><br>
-    <select id="noutolaji" name="noutolaji">
+    <select id="noutolaji" name="noutolaji" value={{ noutolaji }}>
         <option value="1">Yksi esine - alk 59€</option>
         <option value="2">2-3 esinettä - alk 99€</option>
         <option value="3">30 min - alk 149€</option>
     </select>
     <br><br>
 
-    Mitä noudetaan:<br><input type="text" name="kuvaus"><br>
+    Mitä noudetaan:<br><input type="text" name="kuvaus" value={{ kuvaus }}><br>
     <br>
-    Postinumero:<BR><input type="number" name="postinumero"><br>
+    Postinumero:<BR><input type="number" name="postinumero" value={{ postinumero }}><br>
     <br>
     
     <input type="submit" value="Jatka ajanvaraukseen">
+
+    <br><div style="color:red;" >{{ error }}</div>
 </div>
 {% endblock content %}

@@ -4,6 +4,7 @@ from datetime import date, timedelta
 import users, cal, customers, orders
 
 varattu = [0,0,1,0,1,0,1,0,1,0,0,0,0,0,0]
+hinnat = [0,0,0,0,0]
 viikko_delta = 0
 
 # Aloitus
@@ -23,8 +24,16 @@ def ajanvaraus():
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
-    if isBlank(kuvaus) or isBlank(postinumero) :
-        return redirect("/")
+#    print("PNR", postinumero[0])
+#    print("PNR", postinumero[1])
+    if isBlank(kuvaus) :
+        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Täytä noudettavan tavaran laatu")
+    if isBlank(postinumero) :
+        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Täytä postinumero")
+    if (len(postinumero) != 5):
+        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Virheellinen postinumero")
+    if (postinumero[0] != "0" or not (postinumero[1] == "0" or postinumero[1] == "1" or postinumero[1] == "2")):
+        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella")
     viikko_nr = cal.get_week()
     viikko_delta = 0
     paivat = cal.get_days(viikko_nr)
