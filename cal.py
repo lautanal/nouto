@@ -32,7 +32,7 @@ def get_next_week(week_nr):
 def get_prev_week(week_nr):
     sql = "SELECT id FROM calendar WHERE week_nr = :week_nr ORDER BY id"
     result = db.session.execute(sql, {"week_nr":week_nr})
-    day_id = result.fetchone()[0] - 7
+    day_id = result.fetchone()[0] - 1
     sql = "SELECT week_nr FROM calendar WHERE id = :day_id"
     result = db.session.execute(sql, {"day_id":day_id})
     return result.fetchone()[0]

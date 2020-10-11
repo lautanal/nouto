@@ -127,11 +127,11 @@ def vahvistus(wnr):
     postinumero = request.form["postinumero"]
     tsel = request.form["aika"]
     paivat = cal.get_days(wnr)
-    daynr = int(int(tsel)/3)
-    date_id = paivat[daynr][1]
+    day_nr = int(int(tsel)/3)
+    date_id = paivat[day_nr][1]
     date = cal.get_date(date_id)
-    time_frame = int(tsel) - 3*daynr + 1
-    phinta = hinnat[daynr]
+    time_frame = int(tsel) - 3*day_nr + 1
+    phinta = hinnat[day_nr]
 
     if (time_frame == 1):
          clock = "8-12"
@@ -140,18 +140,7 @@ def vahvistus(wnr):
     else:
          clock = "16-19"
 
-    if (daynr == 0):
-        viikonpv = "maanantai"
-    elif (daynr == 1):
-        viikonpv = "tiistai"
-    elif (daynr == 2):
-        viikonpv = "keskiviikko"
-    elif (daynr == 3):
-        viikonpv = "torstai"
-    elif (daynr == 4):
-        viikonpv = "perjanta"
-
-    return render_template("vahvistus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, date_id=date_id, time_frame=time_frame, viikonpv=viikonpv, pvm=date, klo=clock, hinta=phinta)
+    return render_template("vahvistus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, klo=clock, hinta=phinta)
 
 # Uusi varaus tietokantaan
 @app.route("/sendcust", methods=["post"])
@@ -171,16 +160,6 @@ def sendcust():
 
     date = cal.get_date(date_id)
     day_nr = date.isoweekday()
-    if (day_nr == 1):
-        viikonpv = "maanantai"
-    elif (day_nr == 2):
-        viikonpv = "tiistai"
-    elif (day_nr == 3):
-        viikonpv = "keskiviikko"
-    elif (day_nr == 4):
-        viikonpv = "torstai"
-    elif (day_nr == 5):
-        viikonpv = "perjantai"
 
     if (time_frame == 1):
         clock = "8-12"
@@ -197,17 +176,62 @@ def sendcust():
         time_req = 2
 
     if isBlank(name) or isBlank(address) or isBlank(city) or isBlank(phone):
-        return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, viikonpv=viikonpv, pvm=date, klo=clock, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email)
+        return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, klo=clock, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email)
     cust_id = customers.insert(name, address, postcode, city, phone, email, instructions)
     orders.insert(cust_id, date_id, time_frame, ttype, desc, time_req, price, 0)
     date = cal.get_date(date_id)
-    return render_template("valmis.html", viikonpv=viikonpv, pvm=date, klo=clock, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
+    return render_template("valmis.html", day_nr=day_nr, pvm=date, klo=clock, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
 # Kalenterin täyttö
 @app.route("/cal")
 def calfill():
     cal.fill(2020, 2192)
     return redirect("/")
+
+# Varauskalenteri
+@app.route("/lista")
+def worklist_today():
+    d_id = cal.get_today()
+    date = cal.get_date(d_id)
+    day_nr = date.isoweekday()
+    if (day_nr == 6):
+        d_id += 2
+        date = cal.get_date(d_id)
+        day_nr = 1
+    elif (day_nr == 7):
+        d_id += 1
+        date = cal.get_date(d_id)
+        day_nr = 1
+    tlist1 = orders.get_work_list(d_id, 1)
+    tlist2 = orders.get_work_list(d_id, 2)
+    tlist3 = orders.get_work_list(d_id, 3)
+    return render_template("varaukset.html", date_id=d_id, pvm=date, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3)
+
+# Varauskalenteri
+@app.route("/lista/<int:d_id>/<int:step>")
+def worklist(d_id, step):
+    date = cal.get_date(d_id)
+    day_nr = date.isoweekday()
+    if (day_nr == 6):
+        if (step == 1):
+            d_id -= 1
+            day_nr = 5
+        elif (step == 2):
+            d_id += 2
+            day_nr = 1
+        date = cal.get_date(d_id)
+    elif (day_nr == 7):
+        if (step == 1):
+            d_id -= 2
+            day_nr = 5
+        elif (step == 2):
+            d_id += 1
+            day_nr = 1
+        date = cal.get_date(d_id)
+    tlist1 = orders.get_work_list(d_id, 1)
+    tlist2 = orders.get_work_list(d_id, 2)
+    tlist3 = orders.get_work_list(d_id, 3)
+    return render_template("varaukset.html", date_id=d_id, pvm=date, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3)
 
 def isBlank (myString):
     return not (myString and myString.strip())

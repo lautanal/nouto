@@ -17,7 +17,13 @@
         Hinta: {{ hinta }} €
 
         <br><br>
-        Noudon ajankohta: {{viikonpv}} {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo: {{ klo }}
+        Noudon ajankohta: 
+            {% if day_nr == 1 %}maanantai{% endif %}  
+            {% if day_nr == 2 %}tiistai{% endif %}  
+            {% if day_nr == 3 %}keskiviikko{% endif %}  
+            {% if day_nr == 4 %}torstai{% endif %}  
+            {% if day_nr == 5 %}perjantai{% endif %}  
+            {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo: {{ klo }}
 
         <br><br>
         Tilaajan tiedot:
