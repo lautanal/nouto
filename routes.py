@@ -1,11 +1,9 @@
 from app import app
 from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
-import users, cal, customers, orders 
+import users, cal, customers, orders
 
 varattu = [0,0,1,0,1,0,1,0,1,0,0,0,0,0,0]
-hinnat = [59,59,59,59,59]
-viikko_nr = 0
 viikko_delta = 0
 
 # Aloitus
@@ -21,7 +19,7 @@ def info():
 # Ajanvaraus
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
-    global varattu, hinnat, viikko_nr, viikko_delta
+    global varattu, viikko_delta
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -43,15 +41,17 @@ def ajanvaraus():
         elif (paivat[0][1] - today_id < 15):
             hinnat[day] += 10
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
 # Seuraava viikko
-@app.route("/seuraava/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def seuraavaviikko(noutolaji, kuvaus, postinumero):
-    global varattu, hinnat, viikko_nr, viikko_delta
+@app.route("/seuraava/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
+    global varattu, viikko_delta
+    viikko_nr=wnr
     if (viikko_delta < 8):
         viikko_delta += 1
-        viikko_nr = cal.get_next_week(viikko_nr, 7)
+        viikko_nr += 1
+#        viikko_nr = cal.get_next_week(wnr)
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
@@ -65,15 +65,17 @@ def seuraavaviikko(noutolaji, kuvaus, postinumero):
             hinnat[day] += 20
         elif (paivat[0][1] - today_id < 15):
             hinnat[day] += 10
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
 # Edellinen viikko
-@app.route("/edellinen/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def edellinenviikko(noutolaji, kuvaus, postinumero):
-    global varattu, hinnat, viikko_nr, viikko_delta
+@app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
+    global varattu, viikko_delta
+    viikko_nr=wnr
     if (viikko_delta > 0):
         viikko_delta -= 1
-        viikko_nr = cal.get_next_week(viikko_nr, -7)
+        viikko_nr -= 1
+#        viikko_nr = cal.get_prev_week(wnr)
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
@@ -87,7 +89,7 @@ def edellinenviikko(noutolaji, kuvaus, postinumero):
             hinnat[day] += 20
         elif (paivat[0][1] - today_id < 15):
             hinnat[day] += 10
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr % 100, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
 # Vahvistus
 @app.route("/vahvistus", methods=["post"])
@@ -177,7 +179,7 @@ def sendcust():
 # Kalenterin täyttö
 @app.route("/cal")
 def calfill():
-    cal.fill(2020, 731)
+    cal.fill(2020, 2192)
     return redirect("/")
 
 def isBlank (myString):

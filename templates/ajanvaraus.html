@@ -19,7 +19,7 @@
             <br><br>
             Valitse noudon ajankohta:
             <br><br>
-            <a href="/edellinen/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr }} &nbsp &nbsp<a href="/seuraava/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}">Seuraava viikko --></a>
+            <a href="/edellinen/{{ viikko_nr }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp<a href="/seuraava/{{ viikko_nr }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}">Seuraava viikko --></a>
             <br><br>
 
             <table style="width:100%">
