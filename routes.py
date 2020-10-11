@@ -21,11 +21,10 @@ def info():
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
     global varattu, hinnat, viikko_delta
+
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
-#    print("PNR", postinumero[0])
-#    print("PNR", postinumero[1])
     if isBlank(kuvaus) :
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Täytä noudettavan tavaran laatu")
     if isBlank(postinumero) :
@@ -34,9 +33,15 @@ def ajanvaraus():
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Virheellinen postinumero")
     if (postinumero[0] != "0" or not (postinumero[1] == "0" or postinumero[1] == "1" or postinumero[1] == "2")):
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella")
+
     viikko_nr = cal.get_week()
     viikko_delta = 0
     paivat = cal.get_days(viikko_nr)
+    max_var = 3
+    if (noutolaji == "3"):
+        max_var = 2
+    varaukset = orders.get_orders(viikko_nr, max_var)
+
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
     elif (noutolaji == "2"):
@@ -45,23 +50,30 @@ def ajanvaraus():
         hinnat = [149,149,149,149,149]
     today_id = cal.get_today()
     for day in range(5):
-        if (paivat[0][1] - today_id < 8):
+        if (paivat[day][1] - today_id < 8):
             hinnat[day] += 20
-        elif (paivat[0][1] - today_id < 15):
+        elif (paivat[day][1] - today_id < 15):
             hinnat[day] += 10
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat)
 
 # Seuraava viikko
 @app.route("/seuraava/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
     global varattu, hinnat, viikko_delta
+
     viikko_nr=wnr
     if (viikko_delta < 8):
         viikko_delta += 1
         viikko_nr += 1
 #        viikko_nr = cal.get_next_week(wnr)
+
     paivat = cal.get_days(viikko_nr)
+    max_var = 3
+    if (noutolaji == "3"):
+        max_var = 2
+    varaukset = orders.get_orders(viikko_nr, max_var)
+
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
     elif (noutolaji == "2"):
@@ -70,11 +82,11 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
         hinnat = [149,149,149,149,149]
     today_id = cal.get_today()
     for day in range(5):
-        if (paivat[0][1] - today_id < 8):
+        if (paivat[day][1] - today_id < 8):
             hinnat[day] += 20
-        elif (paivat[0][1] - today_id < 15):
+        elif (paivat[day][1] - today_id < 15):
             hinnat[day] += 10
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat)
 
 # Edellinen viikko
 @app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
@@ -85,7 +97,13 @@ def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
         viikko_delta -= 1
         viikko_nr -= 1
 #        viikko_nr = cal.get_prev_week(wnr)
+
     paivat = cal.get_days(viikko_nr)
+    max_var = 3
+    if (noutolaji == "3"):
+        max_var = 2
+    varaukset = orders.get_orders(viikko_nr, max_var)
+
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
     elif (noutolaji == "2"):
@@ -94,11 +112,11 @@ def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
         hinnat = [149,149,149,149,149]
     today_id = cal.get_today()
     for day in range(5):
-        if (paivat[0][1] - today_id < 8):
+        if (paivat[day][1] - today_id < 8):
             hinnat[day] += 20
-        elif (paivat[0][1] - today_id < 15):
+        elif (paivat[day][1] - today_id < 15):
             hinnat[day] += 10
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat)
 
 # Vahvistus
 @app.route("/vahvistus/<int:wnr>", methods=["post"])

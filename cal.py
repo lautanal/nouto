@@ -15,8 +15,7 @@ def get_today():
 
 def get_week():
     today = date.today()
-#    day7 = date.today() + timedelta(days=7)
-    sql = "SELECT week_nr FROM calendar WHERE date > :today  AND work_day = TRUE ORDER BY id LIMIT 5"
+    sql = "SELECT week_nr FROM calendar WHERE date > :today AND work_day = TRUE ORDER BY id LIMIT 5"
     result = db.session.execute(sql, {"today":today})
     return result.fetchone()[0]
 

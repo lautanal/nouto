@@ -1,10 +1,21 @@
 from db import db
 
 # Päivän tilausten haku
-def get_orders(date_id):
-    sql = "SELECT O.time_frame, O.time_required FROM orders O WHERE O.date_id=:date_id ORDER BY O.time_frame"
-    result = db.session.execute(sql, {"date_id":date_id})
-    return result.fetchall()
+def get_orders(week_nr, max):
+    varaukset = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    sql = "SELECT C.day_nr, O.time_frame, SUM(time_required) FROM calendar C, orders O WHERE C.week_nr=:week_nr AND C.day_nr < 6 AND O.date_id=C.id GROUP BY C.day_nr, O.time_frame"
+    result = db.session.execute(sql, {"week_nr":week_nr})
+    olist=result.fetchall()
+    for ol in olist:
+        iday = int(ol[0])
+        itfr = int(ol[1])
+        isum = int(ol[2])
+        if (isum > max):
+            varaukset[(iday-1)*3 + itfr - 1] = 1
+ #       print("IDAY: ", iday)
+ #       print("ITFR: ", itfr)
+ #       print("ISUM: ", isum)
+    return varaukset
 
 
 # Uuden tilauksen talletus tietokantaan
