@@ -5,7 +5,7 @@
         <h3 id="schedule-heading">AJANVARAUS</h3>
         <br>
 
-        <form action="/vahvistus" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/vahvistus/{{ viikko_nr }}" method="post" onkeydown="return event.key != 'Enter';">
             Noudon tiedot:
             <br>
             <input type="hidden" name="noutolaji" value={{ noutolaji }}>

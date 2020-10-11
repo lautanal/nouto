@@ -19,7 +19,7 @@ def info():
 # Ajanvaraus
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
-    global varattu, viikko_delta
+    global varattu, hinnat, viikko_delta
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -46,7 +46,7 @@ def ajanvaraus():
 # Seuraava viikko
 @app.route("/seuraava/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
-    global varattu, viikko_delta
+    global varattu, hinnat, viikko_delta
     viikko_nr=wnr
     if (viikko_delta < 8):
         viikko_delta += 1
@@ -70,7 +70,7 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
 # Edellinen viikko
 @app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
-    global varattu, viikko_delta
+    global varattu, hinnat, viikko_delta
     viikko_nr=wnr
     if (viikko_delta > 0):
         viikko_delta -= 1
@@ -92,14 +92,14 @@ def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
     return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varattu, hinnat=hinnat)
 
 # Vahvistus
-@app.route("/vahvistus", methods=["post"])
-def vahvistus():
+@app.route("/vahvistus/<int:wnr>", methods=["post"])
+def vahvistus(wnr):
     global hinnat
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
     tsel = request.form["aika"]
-    paivat = cal.get_days(viikko_nr)
+    paivat = cal.get_days(wnr)
     daynr = int(int(tsel)/3)
     date_id = paivat[daynr][1]
     date = cal.get_date(date_id)
