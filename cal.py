@@ -1,5 +1,5 @@
 from db import db
-from datetime import date, timedelta
+from datetime import date, timedelta 
 
 
 def get_date(date_id):
@@ -15,33 +15,23 @@ def get_today():
 
 def get_week():
     today = date.today()
-#    day7 = date.today() + timedelta(days=7)
-    sql = "SELECT week_nr FROM calendar WHERE date > :today  AND work_day = TRUE ORDER BY id LIMIT 5"
-    result = db.session.execute(sql, {"today":today})
+    day7 = date.today() + timedelta(days=7)
+    sql = "SELECT week_nr FROM calendar WHERE date > :today AND date < :day7 AND work_day = TRUE ORDER BY date"
+    result = db.session.execute(sql, {"today":today, "day7":day7})
     return result.fetchone()[0]
 
-def get_next_week(week_nr):
-    sql = "SELECT week_nr FROM calendar WHERE week_nr > :week_nr ORDER BY id LIMIT 5"
+def get_next_week(week_nr, ndays):
+    sql = "SELECT date FROM calendar WHERE week_nr = :week_nr ORDER BY date"
     result = db.session.execute(sql, {"week_nr":week_nr})
-#    day7 = result.fetchone()[0]
-#    day7 = day7 + timedelta(days=ndays)
-#    sql = "SELECT week_nr FROM calendar WHERE date = :day7"
-#    result = db.session.execute(sql, {"day7":day7})
-    week_nr = result.fetchone()[0]
-    return week_nr
-
-def get_prev_week(week_nr):
-    sql = "SELECT id FROM calendar WHERE week_nr = :week_nr ORDER BY id"
-    result = db.session.execute(sql, {"week_nr":week_nr})
-    day_id = result.fetchone()[0] - 7
-#    day7 = day7 + timedelta(days=ndays)
-    sql = "SELECT week_nr FROM calendar WHERE id = :day_id"
-    result = db.session.execute(sql, {"day_id":day_id})
+    day7 = result.fetchone()[0]
+    day7 = day7 + timedelta(days=ndays)
+    sql = "SELECT week_nr FROM calendar WHERE date = :day7"
+    result = db.session.execute(sql, {"day7":day7})
     week_nr = result.fetchone()[0]
     return week_nr
 
 def get_days(week_nr):
-    sql = "SELECT date, id FROM calendar WHERE week_nr=:week_nr AND day_nr < 6 ORDER BY id"
+    sql = "SELECT date, id FROM calendar WHERE week_nr=:week_nr AND day_nr < 6 ORDER BY DATE"
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchall()
 

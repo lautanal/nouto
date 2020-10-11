@@ -1,12 +1,11 @@
 from app import app
 from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
-import users, cal, customers, orders
+import users, cal, customers, orders 
 
 varattu = [0,0,1,0,1,0,1,0,1,0,0,0,0,0,0]
 hinnat = [59,59,59,59,59]
 viikko_nr = 0
-viikko0 = 0
 viikko_delta = 0
 
 # Aloitus
@@ -52,7 +51,7 @@ def seuraavaviikko(noutolaji, kuvaus, postinumero):
     global varattu, hinnat, viikko_nr, viikko_delta
     if (viikko_delta < 8):
         viikko_delta += 1
-        viikko_nr = cal.get_next_week(viikko_nr)
+        viikko_nr = cal.get_next_week(viikko_nr, 7)
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
@@ -74,7 +73,7 @@ def edellinenviikko(noutolaji, kuvaus, postinumero):
     global varattu, hinnat, viikko_nr, viikko_delta
     if (viikko_delta > 0):
         viikko_delta -= 1
-        viikko_nr = cal.get_prev_week(viikko_nr)
+        viikko_nr = cal.get_next_week(viikko_nr, -7)
     paivat = cal.get_days(viikko_nr)
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59]
