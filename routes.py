@@ -177,7 +177,7 @@ def sendcust():
 # Kalenterin täyttö
 @app.route("/cal")
 def calfill():
-    cal.fill(2020, 2192)
+    cal.fill(2020, 731)
     return redirect("/")
 
 def isBlank (myString):
