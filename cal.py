@@ -26,7 +26,8 @@ def get_week():
     return result.fetchone()[0]
 
 def get_next_week(week_nr):
-    sql = "SELECT week_nr FROM calendar WHERE week_nr > :week_nr ORDER BY id LIMIT 5"
+    print("NEXT WEEK: ", week_nr)
+    sql = "SELECT week_nr FROM calendar WHERE week_nr > :week_nr ORDER BY id LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchone()[0]
 
@@ -36,9 +37,11 @@ def get_next_week(week_nr):
 #    result = db.session.execute(sql, {"day7":day7})
 
 def get_prev_week(week_nr):
-    sql = "SELECT id FROM calendar WHERE week_nr = :week_nr ORDER BY id"
+    print("PREV WEEK: ", week_nr)
+    sql = "SELECT id FROM calendar WHERE week_nr = :week_nr LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
-    day_id = result.fetchone()[0] - 1
+    day_id = result.fetchone()[0]
+    day_id -= 7
     sql = "SELECT week_nr FROM calendar WHERE id = :day_id"
     result = db.session.execute(sql, {"day_id":day_id})
     return result.fetchone()[0]

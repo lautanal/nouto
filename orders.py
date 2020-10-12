@@ -20,9 +20,6 @@ def get_orders(week_nr, max):
         isum = int(ol[2])
         if (isum > max):
             varaukset[(iday-1)*3 + itfr - 1] = 1   
- #       print("IDAY: ", iday)
- #       print("ITFR: ", itfr)
- #       print("ISUM: ", isum)
     pweek = cal.get_week()
     if (week_nr == pweek):
         wday = cal.get_today().isoweekday()

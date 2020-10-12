@@ -54,11 +54,13 @@ def ajanvaraus():
 def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
     global viikko_delta
 
-    viikko_nr=wnr
-    if (viikko_delta < 8):
+    viikko_nr=int(wnr)
+    if (viikko_delta < 16):
         viikko_delta += 1
-        viikko_nr += 1
-#        viikko_nr = cal.get_next_week(wnr)
+        if (viikko_nr % 100 < 52):
+            viikko_nr += 1
+        else:
+            viikko_nr = cal.get_next_week(viikko_nr)
 
     paivat = cal.get_days(viikko_nr)
     max_var = 3
@@ -78,11 +80,13 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
 @app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
     global viikko_delta
-    viikko_nr=wnr
+    viikko_nr=int(wnr)
     if (viikko_delta > 0):
         viikko_delta -= 1
-        viikko_nr -= 1
-#        viikko_nr = cal.get_prev_week(wnr)
+        if (viikko_nr % 100 > 1):
+            viikko_nr -= 1
+        else:
+            viikko_nr = cal.get_prev_week(viikko_nr)
 
     paivat = cal.get_days(viikko_nr)
     max_var = 3
