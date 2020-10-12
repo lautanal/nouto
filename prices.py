@@ -16,3 +16,18 @@ def prices(day_id, noutolaji):
             hinnat[day] += 10
         day_id += 1
     return hinnat
+
+
+def get_price(day_id, noutolaji):
+    if (noutolaji == "1"):
+        price = 59
+    elif (noutolaji == "2"):
+        price = 99
+    elif(noutolaji == "3"):
+        price = 149
+    today_id = cal.get_today_id()
+    if (day_id - today_id < 8):
+        price += 20
+    elif (day_id - today_id < 15):
+        price += 10
+    return price

@@ -3,8 +3,7 @@ from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
 import users, cal, customers, orders, prices
 
-varattu = [0,0,1,0,1,0,1,0,1,0,0,0,0,0,0]
-hinnat = [0,0,0,0,0]
+hinnat = [59,59,59,59,59]
 viikko_delta = 0
 
 # Aloitus
@@ -20,7 +19,7 @@ def info():
 # Ajanvaraus
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
-    global varattu, hinnat, viikko_delta
+    global viikko_delta
 
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
@@ -53,7 +52,7 @@ def ajanvaraus():
 # Seuraava viikko
 @app.route("/seuraava/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
-    global varattu, hinnat, viikko_delta
+    global viikko_delta
 
     viikko_nr=wnr
     if (viikko_delta < 8):
@@ -78,7 +77,7 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
 # Edellinen viikko
 @app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
 def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
-    global varattu, hinnat, viikko_delta
+    global viikko_delta
     viikko_nr=wnr
     if (viikko_delta > 0):
         viikko_delta -= 1
@@ -102,7 +101,6 @@ def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
 # Vahvistus
 @app.route("/vahvistus/<int:wnr>", methods=["post"])
 def vahvistus(wnr):
-    global hinnat
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -113,7 +111,7 @@ def vahvistus(wnr):
     date_id = paivat[day_nr][1]
     date = cal.get_date(date_id)
     time_frame = int(tsel) - 3*day_nr + 1
-    phinta = hinnat[day_nr]
+    phinta = prices.get_price(date_id,noutolaji)
     day_nr += 1
     print("HINTA= ", phinta)
 
