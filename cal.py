@@ -7,9 +7,15 @@ def get_date(date_id):
     result = db.session.execute(sql, {"date_id":date_id})
     return result.fetchone()[0]
 
-def get_today():
+def get_today_id():
     today = date.today()
     sql = "SELECT id FROM calendar WHERE date = :today"
+    result = db.session.execute(sql, {"today":today})
+    return result.fetchone()[0]
+
+def get_today():
+    today = date.today()
+    sql = "SELECT date FROM calendar WHERE date = :today"
     result = db.session.execute(sql, {"today":today})
     return result.fetchone()[0]
 

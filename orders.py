@@ -1,8 +1,9 @@
 from db import db
+import cal
 
 # Päivän varausten listaus
 def get_work_list(date_id, time_frame):
-    sql = "SELECT O.task_type, O.description, O.price, C.address, C.postcode, C.city, C.name, C.phone, C.email, C.instructions FROM orders O, customers C WHERE O.customer_id=C.id AND date_id=:date_id AND time_frame=:time_frame"
+    sql = "SELECT O.task_type, O.description, O.price, C.address, C.postcode, C.city, C.name, C.phone, C.email, C.instructions FROM orders O, customers C WHERE O.customer_id=C.id AND O.date_id=:date_id AND O.time_frame=:time_frame"
     result = db.session.execute(sql, {"date_id":date_id, "time_frame":time_frame})
     olist=result.fetchall()
     return olist
@@ -18,10 +19,17 @@ def get_orders(week_nr, max):
         itfr = int(ol[1])
         isum = int(ol[2])
         if (isum > max):
-            varaukset[(iday-1)*3 + itfr - 1] = 1
+            varaukset[(iday-1)*3 + itfr - 1] = 1   
  #       print("IDAY: ", iday)
  #       print("ITFR: ", itfr)
  #       print("ISUM: ", isum)
+    pweek = cal.get_week()
+    if (week_nr == pweek):
+        wday = cal.get_today().isoweekday()
+        for day in range(wday):
+            varaukset[3*day] = 1
+            varaukset[3*day + 1] = 1
+            varaukset[3*day + 2] = 1
     return varaukset
 
 # Uuden tilauksen talletus tietokantaan

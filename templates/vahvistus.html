@@ -28,8 +28,11 @@
                 {% if day_nr == 3 %}keskiviikko{% endif %}  
                 {% if day_nr == 4 %}torstai{% endif %}  
                 {% if day_nr == 5 %}perjantai{% endif %}  
-                {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo: {{ klo }}
-            <br><br>
+                {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo:
+                {% if time_frame == 1 %} 8 - 12{% endif %}  
+                {% if time_frame == 2 %} 12-16{% endif %}  
+                {% if time_frame == 3 %} 16-19{% endif %}  
+                <br><br>
             Hinta: {{ hinta }} €
             <br><br>
 
