@@ -55,7 +55,7 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
     global viikko_delta
 
     viikko_nr=int(wnr)
-    if (viikko_delta < 16):
+    if (viikko_delta < 8):
         viikko_delta += 1
         if (viikko_nr % 100 < 52):
             viikko_nr += 1
