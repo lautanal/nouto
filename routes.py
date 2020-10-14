@@ -146,10 +146,10 @@ def sendcust():
     if (isBlank(name) or isBlank(address) or isBlank(city) or isBlank(phone)):
         error = True
         error_message = "Täytä puuttuvat tiedot"
+        return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
     if (not accepted):
         error = True
         error_message = "Hyväksy palveluehdot"
-    if (error):
         return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
     cust_id = customers.insert(name, address, postcode, city, phone, email, instructions)
     orders.insert(cust_id, date_id, time_frame, ttype, desc, time_req, price, 0)
