@@ -45,8 +45,13 @@
             Puhelinnumero:<BR><input type="number" name="puhelin" value={{ puhelin }}><br>
             Email: <br><input type="email" name="email" value={{ email }}><BR>
             Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea><br><br>
+
+            <input type="checkbox" id="ehdot" name="ehdot">
+            <label for="ehdot">Hyväksyn palveluehdot</label><br>
             
             <input type="submit" value="Vahvista tilaus">
+
+            <br><div style="color:red;" >{{ error }}</div>
                 
         </form>
     </div>

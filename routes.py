@@ -4,7 +4,6 @@ from datetime import date, timedelta
 import users, cal, customers, orders, prices
 
 hinnat = [59,59,59,59,59]
-viikko_delta = 0
 
 # Aloitus
 @app.route("/")
@@ -19,8 +18,6 @@ def info():
 # Ajanvaraus
 @app.route("/ajanvaraus", methods=["post"])
 def ajanvaraus():
-    global viikko_delta
-
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
@@ -34,7 +31,6 @@ def ajanvaraus():
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella")
 
     viikko_nr = cal.get_week()
-    viikko_delta = 0
     paivat = cal.get_days(viikko_nr)
     max_var = 3
     if (noutolaji == "3"):
@@ -47,16 +43,14 @@ def ajanvaraus():
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=0, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Seuraava viikko
-@app.route("/seuraava/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
-    global viikko_delta
-
+@app.route("/seuraava/<int:wnr>/<int:vdelta>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
     viikko_nr=int(wnr)
-    if (viikko_delta < 8):
-        viikko_delta += 1
+    if (vdelta < 8):
+        vdelta += 1
         if (viikko_nr % 100 < 52):
             viikko_nr += 1
         else:
@@ -74,15 +68,14 @@ def seuraavaviikko(wnr,noutolaji, kuvaus, postinumero):
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Edellinen viikko
-@app.route("/edellinen/<int:wnr>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
-    global viikko_delta
+@app.route("/edellinen/<int:wnr>/<int:vdelta>//<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
+def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
     viikko_nr=int(wnr)
-    if (viikko_delta > 0):
-        viikko_delta -= 1
+    if (vdelta > 0):
+        vdelta -= 1
         if (viikko_nr % 100 > 1):
             viikko_nr -= 1
         else:
@@ -100,7 +93,7 @@ def edellinenviikko(wnr,noutolaji, kuvaus, postinumero):
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Vahvistus
 @app.route("/vahvistus/<int:wnr>", methods=["post"])
@@ -117,7 +110,6 @@ def vahvistus(wnr):
     time_frame = int(tsel) - 3*day_nr + 1
     phinta = prices.get_price(date_id,noutolaji)
     day_nr += 1
-    print("HINTA= ", phinta)
 
     return render_template("vahvistus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=phinta)
 
@@ -136,6 +128,9 @@ def sendcust():
     phone = request.form["puhelin"]
     email = request.form["email"]
     instructions = request.form["viesti"]
+    accepted = False
+    if request.form.get("ehdot"):
+        accepted = True
 
     date = cal.get_date(date_id)
     day_nr = date.isoweekday()
@@ -147,8 +142,15 @@ def sendcust():
     elif(ttype == "3"):
         time_req = 2
 
-    if isBlank(name) or isBlank(address) or isBlank(city) or isBlank(phone):
-        return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, klo=clock, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email)
+    error = False
+    if (isBlank(name) or isBlank(address) or isBlank(city) or isBlank(phone)):
+        error = True
+        error_message = "Täytä puuttuvat tiedot"
+    if (not accepted):
+        error = True
+        error_message = "Hyväksy palveluehdot"
+    if (error):
+        return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
     cust_id = customers.insert(name, address, postcode, city, phone, email, instructions)
     orders.insert(cust_id, date_id, time_frame, ttype, desc, time_req, price, 0)
     date = cal.get_date(date_id)
