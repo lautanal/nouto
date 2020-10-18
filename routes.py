@@ -169,12 +169,6 @@ def sendcust():
     date = cal.get_date(date_id)
     return render_template("valmis.html", day_nr=day_nr, pvm=date, time_frame=time_frame, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
-# Kalenterin täyttö
-@app.route("/cal")
-def calfill():
-    cal.fill(2020, 2192)
-    return redirect("/")
-
 # Varauskalenteri aloitus
 @app.route("/lista")
 def worklist_today():
@@ -219,6 +213,12 @@ def worklist(d_id, step):
     tlist2 = orders.get_work_list(d_id, 2)
     tlist3 = orders.get_work_list(d_id, 3)
     return render_template("varaukset.html", date_id=d_id, pvm=date, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3)
+
+# Kalenterin täyttö
+@app.route("/cal")
+def calfill():
+    cal.fill(2022, 1096, 2152)
+    return redirect("/")
 
 def isBlank (myString):
     return not (myString and myString.strip())

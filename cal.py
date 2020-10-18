@@ -62,9 +62,10 @@ def get_days(week_nr):
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchall()
 
-def fill(year, days):
+def fill(year, days, sweek):
     day = date(year,1,1)
-    week_nr = day.isocalendar()[1] + (day.year-2000)*100
+    week_nr = sweek
+#    week_nr = day.isocalendar()[1] + (day.year-2000)*100
     for dnr in range(days):
         day_nr = day.isoweekday()
         if day_nr == 1:
