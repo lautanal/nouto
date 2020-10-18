@@ -12,6 +12,7 @@
             <input type="hidden" name="kuvaus" value="{{ kuvaus }}">
             <input type="hidden" name="postinumero" value={{ postinumero }}>
             <input type="hidden" name="kaupunki" value={{ kaupunki }}>
+            <input type="hidden" name="p_extra" value={{ p_extra }}>
             {% if noutolaji == "1" %} 1 esine {% endif %}
             {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
             {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
@@ -25,9 +26,9 @@
             <br><br>
             Valitse noudon ajankohta:
             <br><br>
-            <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}">&nbsp &nbsp<-- Edellinen viikko</a>
+            <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">&nbsp &nbsp<-- Edellinen viikko</a>
             &nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp
-            <a href="/seuraava/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}">Seuraava viikko --></a>
+            <a href="/seuraava/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">Seuraava viikko --></a>
             <br><br>
 
             <table style="width:100%">

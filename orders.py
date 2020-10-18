@@ -10,7 +10,7 @@ def get_work_list(date_id, time_frame):
     return olist
 
 # Viikon varausten haku
-def get_orders(week_nr, max):
+def check_orders(week_nr, max):
     varaukset = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     sql = "SELECT C.day_nr, O.time_frame, SUM(time_required) FROM calendar C, orders O " \
         "WHERE C.week_nr=:week_nr AND C.day_nr < 6 AND O.date_id=C.id GROUP BY C.id, C.day_nr, O.time_frame"
@@ -32,8 +32,8 @@ def get_orders(week_nr, max):
         day_id = int(ol[0])
         iday = int(ol[1])
         wday = int(ol[2])
-        print("DATE_ID= ", day_id)
-        print("WDAY= ", wday)
+#        print("DATE_ID= ", day_id)
+#        print("WDAY= ", wday)
         if day_id <= today_id:
             varaukset[(iday-1)*3] = 1 
             varaukset[(iday-1)*3 + 1] = 1 

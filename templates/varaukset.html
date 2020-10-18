@@ -20,17 +20,19 @@
             <table style="width:100%">
                 {% for task in tasks1 %}
                     <tr>
-                        <td>Noutotyyppi:</td><td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td><td>Kuvaus: {{ task[1]}}</td><td>Hinta: {{ task[2]}} €</td>
+                        <td>Noutotyyppi:</td>
+                        <td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>Kuvaus: {{ task[1]}}</td> <td>Hinta: {{ task[2]}} €</td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>
-                        <td>Osoite:</td><td>{{ task[3]}}</td><td>{{ task[4]}} {{ task[5]}}</td>
+                        <td>Osoite:</td> <td>{{ task[3]}}</td> <td>{{ task[4]}} {{ task[5]}}</td>
                     </tr>
                     <tr>
-                        <td>Tilaaja:</td><td>{{ task[6]}}</td><td>Puhelin: {{ task[7]}} </td><td>Email: {{ task[8]}}</td>
+                        <td>Tilaaja:</td> <td>{{ task[6]}}</td> <td>Puhelin: {{ task[7]}} </td><td>Email: {{ task[8]}}</td>
                     </tr>
                     <tr>
-                        <td>Ohjeet:</td><td>{{ task[9]}} </td>
+                        <td>Ohjeet:</td> <td>{{ task[9]}} </td>
                     </tr>                    
                     <tr><td><br></td></tr>
                 {% endfor %}
@@ -41,7 +43,9 @@
             <table style="width:100%">
                 {% for task in tasks2 %}
                     <tr>
-                        <td>Noutotyyppi:</td><td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td><td>Kuvaus: {{ task[1]}}</td><td>Hinta: {{ task[2]}} €</td>
+                        <td>Noutotyyppi:</td>
+                        <td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>Kuvaus: {{ task[1]}}</td> <td>Hinta: {{ task[2]}} €</td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>
@@ -62,7 +66,9 @@
             <table style="width:100%">
                 {% for task in tasks3 %}
                     <tr>
-                        <td>Noutotyyppi:</td><td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td><td>Kuvaus: {{ task[1]}}</td><td>Hinta: {{ task[2]}} €</td>
+                        <td>Noutotyyppi:</td>
+                        <td>{% if task[0] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>Kuvaus: {{ task[1]}}</td><td>Hinta: {{ task[2]}} €</td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>

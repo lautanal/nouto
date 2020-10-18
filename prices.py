@@ -1,21 +1,19 @@
 from db import db
 import cal
 
-def prices(day_id, noutolaji):
+def prices(day_id, noutolaji, p_extra):
     if (noutolaji == "1"):
         hinnat = [59,59,59,59,59,59,59,59,59,59,59,59,59,59,59]
     elif (noutolaji == "2"):
         hinnat = [99,99,99,99,99,99,99,99,99,99,99,99,99,99,99]
     elif(noutolaji == "3"):
         hinnat = [149,149,149,149,149,149,149,149,149,149,149,149,149,149,149]
+    for i in range(15):
+        hinnat[i] = hinnat[i] + p_extra
 
     today_id = cal.get_today_id()
     for day in range(5):
         if (day_id - today_id < 8):
-            hinnat[day*3] += 20
-            hinnat[day*3+1] += 20
-            hinnat[day*3+2] += 20
-        elif (day_id - today_id < 15):
             hinnat[day*3] += 10
             hinnat[day*3+1] += 10
             hinnat[day*3+2] += 10
@@ -45,16 +43,15 @@ def wprices(week_nr, noutolaji):
 
     return hinnat
 
-def get_price(day_id, noutolaji):
+def get_price(day_id, noutolaji, p_extra):
     if (noutolaji == "1"):
         price = 59
     elif (noutolaji == "2"):
         price = 99
     elif(noutolaji == "3"):
         price = 149
+    price = price + p_extra
     today_id = cal.get_today_id()
     if (day_id - today_id < 8):
-        price += 20
-    elif (day_id - today_id < 15):
         price += 10
     return price
