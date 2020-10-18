@@ -3,7 +3,6 @@ from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
 import users, cal, customers, orders, prices
 
-hinnat = [59,59,59,59,59]
 
 # Aloitus
 @app.route("/")
@@ -21,19 +20,32 @@ def ajanvaraus():
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
+    postin = int(postinumero)
+    p_accepted = False
+    if postin < 1000:
+        p_accepted = True
+        kaupunki = "Helsinki"
+    elif postin >= 1200 and postin <= 1770:
+        p_accepted = True
+        kaupunki = "Vantaa"
+    elif (postin >= 1200 and postin <= 2380) or (postin >= 2600 and postin <= 2860) or (postin >= 2920 and postin <= 2980):
+        p_accepted = True
+        kaupunki = "Espoo"
+    if postin == 2700:
+        kaupunki = "Kauniainen" 
     if isBlank(kuvaus) :
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Täytä noudettavan tavaran laatu")
     if isBlank(postinumero) :
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Täytä postinumero")
     if (len(postinumero) != 5):
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Virheellinen postinumero")
-    if (postinumero[0] != "0" or not (postinumero[1] == "0" or postinumero[1] == "1" or postinumero[1] == "2")):
+    if not p_accepted:
         return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella")
 
     viikko_nr = cal.get_week()
     paivat = cal.get_days(viikko_nr)
     max_var = 3
-    if (noutolaji == "3"):
+    if noutolaji == "3":
         max_var = 2
     varaukset = orders.get_orders(viikko_nr, max_var)
     check = 14
@@ -43,13 +55,13 @@ def ajanvaraus():
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=0, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, kaupunki=kaupunki, viikko_nr=viikko_nr, vdelta=0, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Seuraava viikko
-@app.route("/seuraava/<int:wnr>/<int:vdelta>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
+@app.route("/seuraava/<int:wnr>/<int:vdelta>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>/<string:kaupunki>")
+def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki):
     viikko_nr=int(wnr)
-    if (vdelta < 8):
+    if (vdelta < 12):
         vdelta += 1
         if (viikko_nr % 100 < 52):
             viikko_nr += 1
@@ -58,7 +70,7 @@ def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
 
     paivat = cal.get_days(viikko_nr)
     max_var = 3
-    if (noutolaji == "3"):
+    if noutolaji == "3":
         max_var = 2
     varaukset = orders.get_orders(viikko_nr, max_var)
     check = 14
@@ -68,13 +80,13 @@ def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, kaupunki=kaupunki, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Edellinen viikko
-@app.route("/edellinen/<int:wnr>/<int:vdelta>//<string:noutolaji>/<string:kuvaus>/<string:postinumero>")
-def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
+@app.route("/edellinen/<int:wnr>/<int:vdelta>//<string:noutolaji>/<string:kuvaus>/<string:postinumero>/<string:kaupunki>")
+def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki):
     viikko_nr=int(wnr)
-    if (vdelta > 0):
+    if vdelta > 0:
         vdelta -= 1
         if (viikko_nr % 100 > 1):
             viikko_nr -= 1
@@ -83,7 +95,7 @@ def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
 
     paivat = cal.get_days(viikko_nr)
     max_var = 3
-    if (noutolaji == "3"):
+    if noutolaji == "3":
         max_var = 2
     varaukset = orders.get_orders(viikko_nr, max_var)
     check = 14
@@ -93,7 +105,7 @@ def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero):
 
     hinnat = prices.prices(paivat[0][1], noutolaji)
 
-    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
+    return render_template("ajanvaraus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, kaupunki=kaupunki, viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, varattu=varaukset, hinnat=hinnat, valinta=check)
 
 # Vahvistus
 @app.route("/vahvistus/<int:wnr>", methods=["post"])
@@ -101,6 +113,7 @@ def vahvistus(wnr):
     noutolaji = request.form["noutolaji"]
     kuvaus = request.form["kuvaus"]
     postinumero = request.form["postinumero"]
+    kaupunki = request.form["kaupunki"]
 
     tsel = request.form["aika"]
     paivat = cal.get_days(wnr)
@@ -111,7 +124,7 @@ def vahvistus(wnr):
     phinta = prices.get_price(date_id,noutolaji)
     day_nr += 1
 
-    return render_template("vahvistus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=phinta)
+    return render_template("vahvistus.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, kaupunki=kaupunki, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=phinta)
 
 # Uusi varaus tietokantaan
 @app.route("/sendcust", methods=["post"])
@@ -135,19 +148,19 @@ def sendcust():
     date = cal.get_date(date_id)
     day_nr = date.isoweekday()
 
-    if (ttype == "1"):
+    if ttype == "1":
         time_req = 1
-    elif (ttype == "2"):
+    elif ttype == "2":
         time_req = 1
-    elif(ttype == "3"):
+    elif ttype == "3":
         time_req = 2
 
     error = False
-    if (isBlank(name) or isBlank(address) or isBlank(city) or isBlank(phone)):
+    if isBlank(name) or isBlank(address) or isBlank(phone):
         error = True
         error_message = "Täytä puuttuvat tiedot"
         return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
-    if (not accepted):
+    if not accepted:
         error = True
         error_message = "Hyväksy palveluehdot"
         return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, time_frame=time_frame, day_nr=day_nr, pvm=date, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
@@ -168,11 +181,11 @@ def worklist_today():
     d_id = cal.get_today_id()
     date = cal.get_date(d_id)
     day_nr = date.isoweekday()
-    if (day_nr == 6):
+    if day_nr == 6:
         d_id += 2
         date = cal.get_date(d_id)
         day_nr = 1
-    elif (day_nr == 7):
+    elif day_nr == 7:
         d_id += 1
         date = cal.get_date(d_id)
         day_nr = 1
@@ -186,7 +199,7 @@ def worklist_today():
 def worklist(d_id, step):
     date = cal.get_date(d_id)
     day_nr = date.isoweekday()
-    if (day_nr == 6):
+    if day_nr == 6:
         if (step == 1):
             d_id -= 1
             day_nr = 5
@@ -194,11 +207,11 @@ def worklist(d_id, step):
             d_id += 2
             day_nr = 1
         date = cal.get_date(d_id)
-    elif (day_nr == 7):
-        if (step == 1):
+    elif day_nr == 7:
+        if step == 1:
             d_id -= 2
             day_nr = 5
-        elif (step == 2):
+        elif step == 2:
             d_id += 1
             day_nr = 1
         date = cal.get_date(d_id)

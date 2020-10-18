@@ -14,6 +14,7 @@
             <input type="hidden" name="time_frame" value={{ time_frame }}>
             <input type="hidden" name="hinta" value={{ hinta }}>
             <input type="hidden" name="postinumero" value={{ postinumero }}>
+            <input type="hidden" name="kaupunki" value={{ kaupunki }}>
 
             {% if noutolaji == "1" %} 1 esine {% endif %}
             {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
@@ -39,11 +40,9 @@
             Tilaajan tiedot:
             <br><br>
             Nimi:<br><input type="text" name="nimi" value={{ nimi }}><br>
-            Osoite:<br><input type="text" name="osoite" value={{ osoite }}><br>
-            Postinumero:<BR> {{ postinumero }} <br>
-            Postitoimipaikka:<BR><input type="text" name="kaupunki" value={{ kaupunki }}><br>
+            Katuosoite:<br><input type="text" name="osoite" value={{ osoite }}> &nbsp &nbsp {{ postinumero }} &nbsp {{ kaupunki }} <br>
             Puhelinnumero:<BR><input type="number" name="puhelin" value={{ puhelin }}><br>
-            Email: <br><input type="email" name="email" value={{ email }}><BR>
+            Email: <br><input type="email" name="email" value={{ email }}><br>
             Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea><br><br>
 
             <input type="checkbox" id="ehdot" name="ehdot">

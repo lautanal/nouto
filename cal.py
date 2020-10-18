@@ -19,6 +19,17 @@ def get_today():
     result = db.session.execute(sql, {"today":today})
     return result.fetchone()[0]
 
+def get_wday(date_id):
+    sql = "SELECT work_day FROM calendar WHERE id = :date_id"
+    result = db.session.execute(sql, {"date_id":date_id})
+    return result.fetchone()[0]
+
+def get_today_week():
+    today = date.today()
+    sql = "SELECT week FROM calendar WHERE date = :today"
+    result = db.session.execute(sql, {"today":today})
+    return result.fetchone()[0]
+
 def get_week():
     today = date.today()
     sql = "SELECT week_nr FROM calendar WHERE date > :today AND work_day = TRUE ORDER BY id LIMIT 5"
@@ -26,7 +37,7 @@ def get_week():
     return result.fetchone()[0]
 
 def get_next_week(week_nr):
-    print("NEXT WEEK: ", week_nr)
+#   print("NEXT WEEK: ", week_nr)
     sql = "SELECT week_nr FROM calendar WHERE week_nr > :week_nr ORDER BY id LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchone()[0]
@@ -37,7 +48,7 @@ def get_next_week(week_nr):
 #    result = db.session.execute(sql, {"day7":day7})
 
 def get_prev_week(week_nr):
-    print("PREV WEEK: ", week_nr)
+#    print("PREV WEEK: ", week_nr)
     sql = "SELECT id FROM calendar WHERE week_nr = :week_nr LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
     day_id = result.fetchone()[0]
@@ -56,9 +67,9 @@ def fill(year, days):
     week_nr = day.isocalendar()[1] + (day.year-2000)*100
     for dnr in range(days):
         day_nr = day.isoweekday()
-        if (day_nr == 1):
+        if day_nr == 1:
             week_nr = day.isocalendar()[1] + (day.year-2000)*100
-        if (day_nr < 6):
+        if day_nr < 6:
              work_day = True
         else:
             work_day = False
