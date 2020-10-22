@@ -13,22 +13,27 @@ def get_today_id():
     result = db.session.execute(sql, {"today":today})
     return result.fetchone()[0]
 
-def get_today():
+def get_wday():
     today = date.today()
-    sql = "SELECT date FROM calendar WHERE date = :today"
+    sql = "SELECT id, date FROM calendar WHERE date >= :today AND work_day = TRUE ORDER BY id LIMIT 1"
     result = db.session.execute(sql, {"today":today})
-    return result.fetchone()[0]
+    return result.fetchone()
 
-def get_wday(date_id):
-    sql = "SELECT work_day FROM calendar WHERE id = :date_id"
+def get_wday_next(date_id):
+    sql = "SELECT id, date FROM calendar WHERE id > :date_id AND work_day = TRUE ORDER BY id LIMIT 1"
     result = db.session.execute(sql, {"date_id":date_id})
-    return result.fetchone()[0]
+    return result.fetchone()
 
-def get_today_week():
-    today = date.today()
-    sql = "SELECT week FROM calendar WHERE date = :today"
-    result = db.session.execute(sql, {"today":today})
-    return result.fetchone()[0]
+def get_wday_prev(date_id):
+    sql = "SELECT id, date FROM calendar WHERE id < :date_id AND work_day = TRUE ORDER BY id DESC LIMIT 1"
+    result = db.session.execute(sql, {"date_id":date_id})
+    return result.fetchone()
+
+# def get_today_week():
+#    today = date.today()
+#    sql = "SELECT week FROM calendar WHERE date = :today"
+#    result = db.session.execute(sql, {"today":today})
+#    return result.fetchone()[0]
 
 def get_week():
     today = date.today()
@@ -37,7 +42,6 @@ def get_week():
     return result.fetchone()[0]
 
 def get_next_week(week_nr):
-#   print("NEXT WEEK: ", week_nr)
     sql = "SELECT week_nr FROM calendar WHERE week_nr > :week_nr ORDER BY id LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchone()[0]
@@ -48,17 +52,17 @@ def get_next_week(week_nr):
 #    result = db.session.execute(sql, {"day7":day7})
 
 def get_prev_week(week_nr):
-#    print("PREV WEEK: ", week_nr)
-    sql = "SELECT id FROM calendar WHERE week_nr = :week_nr LIMIT 1"
+    sql = "SELECT week_nr FROM calendar WHERE week_nr < :week_nr ORDER BY id DESC LIMIT 1"
     result = db.session.execute(sql, {"week_nr":week_nr})
-    day_id = result.fetchone()[0]
-    day_id -= 7
-    sql = "SELECT week_nr FROM calendar WHERE id = :day_id"
-    result = db.session.execute(sql, {"day_id":day_id})
     return result.fetchone()[0]
 
+#    day_id -= 7
+#    sql = "SELECT week_nr FROM calendar WHERE id = :day_id"
+#    result = db.session.execute(sql, {"day_id":day_id})
+#    return result.fetchone()[0]
+
 def get_days(week_nr):
-    sql = "SELECT date, id FROM calendar WHERE week_nr=:week_nr AND day_nr < 6 ORDER BY id"
+    sql = "SELECT date, id , work_day FROM calendar WHERE week_nr=:week_nr AND day_nr < 6 ORDER BY id"
     result = db.session.execute(sql, {"week_nr":week_nr})
     return result.fetchall()
 

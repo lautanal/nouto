@@ -1,0 +1,59 @@
+{% extends "adlayout.html" %}
+{% block content %}
+    <div class="text">
+
+        <br>
+        <h3>HINTOJEN MUUTOKSET</h3>
+        <br>
+
+        <form action="/admin/lisahinnat/{{ viikko_nr }}/{{ vdelta }}" method="post" onkeydown="return event.key != 'Enter';">
+            <br>
+            Syötä  lisähinta(+) tai alennus
+            (-) euroissa:
+            <br><br>
+            <a href="/admin/hinnate/{{ viikko_nr }}/{{ vdelta }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp<a href="/admin/hinnats/{{ viikko_nr }}/{{ vdelta }}">Seuraava viikko --></a>
+            <br><br>
+
+            <table style="width:100%">
+                <colgroup>
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                </colgroup>
+                <tr>
+                    <th></th>
+                    <th>Ma</th>
+                    <th>Ti</th>
+                    <th>Ke</th>
+                    <th>To</th>
+                    <th>Pe</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>{{ paivat[0][0].day }}.{{ paivat[0][0].month }}.</th>
+                    <th>{{ paivat[1][0].day }}.{{ paivat[1][0].month }}.</th>
+                    <th>{{ paivat[2][0].day }}.{{ paivat[2][0].month }}.</th>
+                    <th>{{ paivat[3][0].day }}.{{ paivat[3][0].month }}.</th>
+                    <th>{{ paivat[4][0].day }}.{{ paivat[4][0].month }}.</th>
+                </tr>
+                <tr>
+                    <td>Lisähinta</td>
+                    <td><input type="number" name="d0" style="width: 5em" value={{ hinnat[0] }}>€</td>
+                    <td><input type="number" name="d1" style="width: 5em" value={{ hinnat[1] }}>€</td>
+                    <td><input type="number" name="d2" style="width: 5em" value={{ hinnat[2] }}>€</td>
+                    <td><input type="number" name="d3" style="width: 5em" value={{ hinnat[3] }}>€</td>
+                    <td><input type="number" name="d4" style="width: 5em" value={{ hinnat[4] }}>€</td>
+                </tr>
+            </table>
+            <br>
+            
+            <input type="submit" value="Talleta muutokset">
+            <br>
+            <div style="color:red;" >{{ msg }}</div>
+                
+        </form>
+    </div>
+{% endblock content %}

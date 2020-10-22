@@ -1,0 +1,45 @@
+{% extends "adlayout.html" %}
+{% block content %}
+    <div class="text">
+
+        <h3>POISTA TILAUS</h3>
+        <br>
+
+        Noudon tiedot:<br>
+        {% if noutolaji == 1 %} 1 esine{% endif %}
+        {% if noutolaji == 2 %} 2-3 esinettä{% endif %}
+        {% if noutolaji == 3 %} 30 minuutin nouto{% endif %}
+        <br>
+        {{ kuvaus }}
+        <br><br>
+        Hinta: {{ hinta }} €
+        <br><br>
+        Noudon ajankohta:
+        <br> 
+        {% if day_nr == 1 %}maanantai{% endif %}  
+        {% if day_nr == 2 %}tiistai{% endif %}  
+        {% if day_nr == 3 %}keskiviikko{% endif %}  
+        {% if day_nr == 4 %}torstai{% endif %}  
+        {% if day_nr == 5 %}perjantai{% endif %}  
+        {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} klo:
+        {% if time_frame == 1 %} 8 - 11{% endif %}  
+        {% if time_frame == 2 %} 11-14{% endif %}  
+        {% if time_frame == 3 %} 14-17{% endif %}  
+        {% if time_frame == 4 %} 17-20{% endif %}  
+
+        <br><br>
+        Tilaajan tiedot:
+        <br>
+        Nimi: {{ nimi }}<br>
+        Osoite: {{ osoite }}<br>
+        Postinumero: {{ postinumero }}<br>
+        Postitoimipaikka: {{ kaupunki }}<br>
+        Puhelinnumero: {{ puhelin }}<br>
+        Email: {{ email }}<br>
+        <form action="/admin/poistovahvistus/{{ oid }}" method="post" onkeydown="return event.key != 'Enter';">
+            <br>
+            <input type="submit" value="Vahvista tilauksen poisto">
+        </form>
+
+    </div>
+{% endblock content %}

@@ -24,6 +24,17 @@ CREATE TABLE orders (
     description TEXT,
     time_required INTEGER,
     price INTEGER,
-    discount INTEGER
+    discount INTEGER,
+    deleted BOOLEAN
 );
+CREATE TABLE prices (
+    id SERIAL PRIMARY KEY,
+    date_id INTEGER REFERENCES calendar,
+    p1 INTEGER,
+    p2 INTEGER,
+    p3 INTEGER,
+    p4 INTEGER
+);
+
+
 
