@@ -1,5 +1,6 @@
 {% extends "adlayout.html" %}
 {% block content %}
+<div class="jumbotron">
     <form action="/adlogin" method="post">
         <h2>Kirjaudu sisään</h2>
         Tunnus: <input type="text" name="username">
@@ -10,5 +11,8 @@
         <p>
         <input type="submit" value="Kirjaudu">
     </form>
+    <br><div style="color:red;" >{{ error }}</div>
+    <br>
+</div>
 {% endblock content %}
 

@@ -1,5 +1,6 @@
 {% extends "adlayout.html" %}
 {% block content %}
+<div class="jumbotron">
     <form action="/adregister" method="post">
         <h2>Luo uusi käyttäjätunnus</h2>
         Tunnus: <input type="text" name="username">
@@ -10,4 +11,5 @@
         <p>
         <input type="submit" value="Luo tunnus">
     </form>
+</div>
 {% endblock content %}
