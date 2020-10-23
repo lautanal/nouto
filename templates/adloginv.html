@@ -1,0 +1,18 @@
+{% extends "adlayout.html" %}
+{% block content %}
+<div class="jumbotron">
+    <form action="/adloginv" method="post">
+        <h2>Kirjaudu sisään</h2>
+        Tunnus: <input type="text" name="username">
+        <br><br>
+        <p>
+        Salasana: <input type="password" name="password">
+        <br><br>
+        <p>
+        <input type="submit" value="Kirjaudu">
+    </form>
+    <br><div style="color:red;" >{{ error }}</div>
+    <br>
+</div>
+{% endblock content %}
+

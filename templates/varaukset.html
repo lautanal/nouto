@@ -1,4 +1,4 @@
-{% extends "adlayout.html" %}
+{% extends "adlayoutv.html" %}
 {% block content %}
     <div>
 
@@ -6,13 +6,13 @@
         <h3>VARAUSKALENTERI</h3>
         <br>
 
-            <a href="/admin/varaukset/{{ date_id}}/1"> &nbsp &nbsp <-- Edellinen päivä </a>  &nbsp &nbsp
+            <a href="/varaukset/{{ date_id}}/1"> &nbsp &nbsp <-- Edellinen päivä </a>  &nbsp &nbsp
                 {% if day_nr == 1 %}maanantai{% endif %}  
                 {% if day_nr == 2 %}tiistai{% endif %}  
                 {% if day_nr == 3 %}keskiviikko{% endif %}  
                 {% if day_nr == 4 %}torstai{% endif %}  
                 {% if day_nr == 5 %}perjantai{% endif %}  
-            {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} &nbsp &nbsp <a href="/admin/varaukset/{{ date_id}}/2"> Seuraava päivä --> </a>
+            {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} &nbsp &nbsp <a href="/varaukset/{{ date_id}}/2"> Seuraava päivä --> </a>
 
             <br><br>
 
@@ -23,7 +23,7 @@
                     <tr>
                         <td>Noutotyyppi:</td>
                         <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/admin/poista/{{ task[0] }}">Poista</a></td>
+                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>
@@ -47,7 +47,7 @@
                     <tr>
                         <td>Noutotyyppi:</td>
                         <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/admin/poista/{{ task[0] }}">Poista</a></td>
+                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>
@@ -71,7 +71,7 @@
                     <tr>
                         <td>Noutotyyppi:</td>
                         <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/admin/poista/{{ task[0] }}">Poista</a></td>
+                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>
@@ -95,7 +95,7 @@
                     <tr>
                         <td>Noutotyyppi:</td>
                         <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/admin/poista/{{ task[0] }}">Poista</a></td>
+                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
                     <tr>

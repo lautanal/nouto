@@ -184,11 +184,75 @@ def sendcust():
 
     return render_template("valmis.html", day_nr=day_nr, pvm=pvm, time_frame=time_frame, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
+# Hinnat
+@app.route("/hinnat")
+def hinnat():
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr = cal.get_week()
+        paivat = cal.get_days(viikko_nr)
+        hinnat = prices.get_add_prices(viikko_nr)
+
+        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=0, paivat=paivat, hinnat=hinnat)
+
+@app.route("/hinnats/<int:wnr>/<int:vdelta>")
+def hinnats(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr=int(wnr)
+        if (vdelta < 12):
+            vdelta += 1
+            if (viikko_nr % 100 < 52):
+                viikko_nr += 1
+            else:
+                viikko_nr = cal.get_next_week(viikko_nr)
+
+        paivat = cal.get_days(viikko_nr)
+        hinnat = prices.get_add_prices(viikko_nr)
+
+        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
+
+@app.route("/hinnate/<int:wnr>/<int:vdelta>")
+def hinnate(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr=int(wnr)
+        if vdelta > 0:
+            vdelta -= 1
+            if (viikko_nr % 100 > 1):
+                viikko_nr -= 1
+            else:
+                viikko_nr = cal.get_prev_week(viikko_nr)
+
+        paivat = cal.get_days(viikko_nr)
+        hinnat = prices.get_add_prices(viikko_nr)
+
+        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
+
+@app.route("/lisahinnat/<int:wnr>/<int:vdelta>", methods=["post"])
+def lisahinnat(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        hinnat = [0,0,0,0,0]
+        hinnat[0] = int(request.form["d0"])
+        hinnat[1] = int(request.form["d1"])
+        hinnat[2] = int(request.form["d2"])
+        hinnat[3] = int(request.form["d3"])
+        hinnat[4] = int(request.form["d4"])
+        paivat = cal.get_days(wnr)
+        prices.update(wnr, paivat[0][1], hinnat)
+        
+        return render_template("hinnat.html", viikko_nr=wnr, vdelta=vdelta, paivat=paivat, hinnat=hinnat, msg="Hinnat päivitetty")
+
 # Varauskalenteri aloitus
-@app.route("/admin/varaukset")
+@app.route("/varaukset")
 def worklist_today():
     if admins.admin_id() == 0:
-        return render_template("adlogin.html", login="yes")
+        return render_template("adloginv.html", login="yes")
     else:
         wday = cal.get_wday()
         d_id = wday[0]
@@ -202,7 +266,7 @@ def worklist_today():
         return render_template("varaukset.html", date_id=d_id, pvm=pvm, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3)
 
 # Varauskalenteri seuraava päivä
-@app.route("/admin/varaukset/<int:d_id>/<int:step>")
+@app.route("/varaukset/<int:d_id>/<int:step>")
 def worklist(d_id, step):
     if admins.admin_id() == 0:
         return render_template("adlogin.html", login="yes")
@@ -223,72 +287,8 @@ def worklist(d_id, step):
         tlist4 = orders.get_work_list(d_id, 4)
         return render_template("varaukset.html", date_id=d_id, pvm=pvm, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3, tasks4=tlist4)
 
-# Hinnat
-@app.route("/admin/hinnat")
-def hinnat():
-    if admins.admin_id() == 0:
-        return render_template("adlogin.html", login="yes")
-    else:
-        viikko_nr = cal.get_week()
-        paivat = cal.get_days(viikko_nr)
-        hinnat = prices.get_add_prices(viikko_nr)
-
-        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=0, paivat=paivat, hinnat=hinnat)
-
-@app.route("/admin/hinnats/<int:wnr>/<int:vdelta>")
-def hinnats(wnr, vdelta):
-    if admins.admin_id() == 0:
-        return render_template("adlogin.html", login="yes")
-    else:
-        viikko_nr=int(wnr)
-        if (vdelta < 12):
-            vdelta += 1
-            if (viikko_nr % 100 < 52):
-                viikko_nr += 1
-            else:
-                viikko_nr = cal.get_next_week(viikko_nr)
-
-        paivat = cal.get_days(viikko_nr)
-        hinnat = prices.get_add_prices(viikko_nr)
-
-        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
-
-@app.route("/admin/hinnate/<int:wnr>/<int:vdelta>")
-def hinnate(wnr, vdelta):
-    if admins.admin_id() == 0:
-        return render_template("adlogin.html", login="yes")
-    else:
-        viikko_nr=int(wnr)
-        if vdelta > 0:
-            vdelta -= 1
-            if (viikko_nr % 100 > 1):
-                viikko_nr -= 1
-            else:
-                viikko_nr = cal.get_prev_week(viikko_nr)
-
-        paivat = cal.get_days(viikko_nr)
-        hinnat = prices.get_add_prices(viikko_nr)
-
-        return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
-
-@app.route("/admin/lisahinnat/<int:wnr>/<int:vdelta>", methods=["post"])
-def lisahinnat(wnr, vdelta):
-    if admins.admin_id() == 0:
-        return render_template("adlogin.html", login="yes")
-    else:
-        hinnat = [0,0,0,0,0]
-        hinnat[0] = int(request.form["d0"])
-        hinnat[1] = int(request.form["d1"])
-        hinnat[2] = int(request.form["d2"])
-        hinnat[3] = int(request.form["d3"])
-        hinnat[4] = int(request.form["d4"])
-        paivat = cal.get_days(wnr)
-        prices.update(wnr, paivat[0][1], hinnat)
-        
-        return render_template("hinnat.html", viikko_nr=wnr, vdelta=vdelta, paivat=paivat, hinnat=hinnat, msg="Hinnat päivitetty")
-
 # Varauksen poisto
-@app.route("/admin/poista/<int:o_id>")
+@app.route("/poista/<int:o_id>")
 def poista(o_id):
     if admins.admin_id() == 0:
         return render_template("adlogin.html", login="yes")
@@ -313,7 +313,7 @@ def poista(o_id):
         return render_template("poista.html", oid=o_id, day_nr=day_nr, pvm=pvm, time_frame=time_frame, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
 # Varauksen poiston vahvistus
-@app.route("/admin/poistovahvistus/<int:o_id>", methods=["post"])
+@app.route("/poistovahvistus/<int:o_id>", methods=["post"])
 def poistovahvistus(o_id):
     if admins.admin_id() == 0:
         return render_template("adlogin.html", login="yes")

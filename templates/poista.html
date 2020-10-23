@@ -1,4 +1,4 @@
-{% extends "adlayout.html" %}
+{% extends "adlayoutv.html" %}
 {% block content %}
     <div class="text">
 
@@ -36,7 +36,7 @@
         Postitoimipaikka: {{ kaupunki }}<br>
         Puhelinnumero: {{ puhelin }}<br>
         Email: {{ email }}<br>
-        <form action="/admin/poistovahvistus/{{ oid }}" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/poistovahvistus/{{ oid }}" method="post" onkeydown="return event.key != 'Enter';">
             <br>
             <input type="submit" value="Vahvista tilauksen poisto">
         </form>

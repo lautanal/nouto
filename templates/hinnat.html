@@ -1,4 +1,4 @@
-{% extends "adlayout.html" %}
+{% extends "adlayouth.html" %}
 {% block content %}
     <div class="text">
 
@@ -6,12 +6,12 @@
         <h3>HINTOJEN MUUTOKSET</h3>
         <br>
 
-        <form action="/admin/lisahinnat/{{ viikko_nr }}/{{ vdelta }}" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/lisahinnat/{{ viikko_nr }}/{{ vdelta }}" method="post" onkeydown="return event.key != 'Enter';">
             <br>
             Syötä  lisähinta(+) tai alennus
             (-) euroissa:
             <br><br>
-            <a href="/admin/hinnate/{{ viikko_nr }}/{{ vdelta }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp<a href="/admin/hinnats/{{ viikko_nr }}/{{ vdelta }}">Seuraava viikko --></a>
+            <a href="/hinnate/{{ viikko_nr }}/{{ vdelta }}">&nbsp &nbsp<-- Edellinen viikko</a>&nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp<a href="/hinnats/{{ viikko_nr }}/{{ vdelta }}">Seuraava viikko --></a>
             <br><br>
 
             <table style="width:100%">
