@@ -15,8 +15,36 @@ mail_settings = {
 app.config.update(mail_settings)
 mail = Mail(app)
 
-def email(recipient, msg_txt):
-    msg = Message('Easynouto varausvahvistus', sender = "Easynouto", recipients = [recipient])
-    msg.body = msg_txt
+def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
+    msg = Message('Easynouto varausvahvistus', sender = "Easynouto", recipients = [email])
+    emsg = "VARAUSVAHVISTUS\n\nNoudon tiedot: "
+    if ttype == "1":
+        emsg = emsg + "\n1 esine\n"
+    elif ttype == "2":
+        emsg= emsg + "\n2-3 esinettä\n"
+    elif ttype == "3":
+        emsg = emsg + "\n30 minuutin nouto\n"
+    emsg = emsg + desc + "\nHinta: " + price + " €\nNoudon ajankohta: "
+    if day_nr == 1:
+        emsg = emsg + "maanantai " + str(pvm.day) + "." + str(pvm.month) + "." + str(pvm.year)
+    elif day_nr == 2:
+        emsg = emsg + "tiistai " + str(pvm.day) + "." + str(pvm.month) + "." + str(pvm.year)
+    elif day_nr == 3:
+        emsg = emsg + "keskiviikko " + str(pvm.day) + "." + str(pvm.month) + "." + str(pvm.year)
+    elif day_nr == 4:
+        emsg = emsg + "torstai "  + str(pvm.day) + "." + str(pvm.month) + "." + str(pvm.year)
+    elif day_nr == 5:
+        emsg = emsg + "perjantai "  + str(pvm.day) + "." + str(pvm.month) + "." + str(pvm.year)
+    if time_frame == "1":
+        emsg = emsg + " klo 08-11 \nTilaaja:\n"
+    elif time_frame == "2":
+        emsg = emsg + " klo 11-14 \nTilaaja:\n"
+    elif time_frame == "3":
+        emsg = emsg + " klo 14-17 \nTilaaja:\n"
+    elif time_frame == "4":
+        emsg = emsg + " klo 17-20 \nTilaaja:\n"
+    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nOhjeet:\n" + instructions
+    
+    msg.body = emsg
     mail.send(msg)
     return "Sent"

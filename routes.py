@@ -8,7 +8,7 @@ import users, cal, customers, orders, prices, admins, sendmail
 def emailtest():
     receipient = "lasselautanala@gmail.com"
     msg = "Heippa, tämä on Easynoudon 5. testilähetys"
-    sendmail.emailtest(receipient,msg)
+#    sendmail.emailtest(receipient,msg)
     return "Sent"
 
 # Aloitus
@@ -87,7 +87,7 @@ def ajanvaraus():
 @app.route("/seuraava/<int:wnr>/<int:vdelta>/<string:noutolaji>/<string:kuvaus>/<string:postinumero>/<string:kaupunki>/<int:p_extra>")
 def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki, p_extra):
     viikko_nr=int(wnr)
-    if (vdelta < 12):
+    if (vdelta < 8):
         vdelta += 1
         if (viikko_nr % 100 < 52):
             viikko_nr += 1
@@ -174,11 +174,11 @@ def sendcust():
     day_nr = pvm.isoweekday()
 
     if ttype == "1":
-        time_req = 1
+        time_req = 45
     elif ttype == "2":
-        time_req = 1
+        time_req = 45
     elif ttype == "3":
-        time_req = 2
+        time_req = 60
 
     if isBlank(name) or isBlank(address) or isBlank(phone):
         error_message = "Täytä puuttuvat tiedot"
@@ -189,7 +189,7 @@ def sendcust():
     cust_id = customers.insert(name, address, postcode, city, phone, email, instructions)
     orders.insert(cust_id, date_id, time_frame, ttype, desc, time_req, price, 0)
     
-#    sendmail.email(email, "Tilausvahvistus\n" + str(pvm) + "\n" + name)
+    sendmail.customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions)
 
     return render_template("valmis.html", day_nr=day_nr, pvm=pvm, time_frame=time_frame, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
