@@ -2,6 +2,7 @@ from app import app
 from flask_mail import Mail, Message
 from os import getenv
 
+easynouto_email = getenv("EASYNOUTO_EMAIL")
 email_address = getenv("SENDER_EMAIL")
 psw = getenv("SENDER_PSW")
 mail_settings = {
@@ -16,8 +17,8 @@ app.config.update(mail_settings)
 mail = Mail(app)
 
 def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
-    msg = Message('Easynouto varausvahvistus', sender = "Easynouto", recipients = [email])
-    emsg = "VARAUSVAHVISTUS\n\nNoudon tiedot: "
+    msg = Message('TESTI: Easynouto varausvahvistus', sender = "Easynouto", recipients = [email])
+    emsg = "TESTIVARAUS\n\nNoudon tiedot: "
     if ttype == "1":
         emsg = emsg + "\n1 esine\n"
     elif ttype == "2":
@@ -43,8 +44,12 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
         emsg = emsg + " klo 14-17 \nTilaaja:\n"
     elif time_frame == "4":
         emsg = emsg + " klo 17-20 \nTilaaja:\n"
-    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nOhjeet:\n" + instructions
-    
+    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nOhjeet:\n" + instructions    
     msg.body = emsg
     mail.send(msg)
+
+    msg = Message('TESTATAAN EMAIL-ILMOITUSTA', sender = "Easynouto", recipients = [easynouto_email])
+    msg.body = emsg
+    mail.send(msg)
+
     return "Sent"
