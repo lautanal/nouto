@@ -51,7 +51,8 @@ def insert(cust_id, date_id, time_fr, ttype, desc, time_req, price, discount):
     sql = "INSERT INTO orders (customer_id, date_id, time_frame, task_type, description, time_required, price, discount) " \
         "VALUES (:cust_id, :date_id, :time_fr, :ttype, :desc, :time_req, :price, :discount)"
     db.session.execute(sql, {"cust_id":cust_id, "date_id":date_id, "time_fr":time_fr, "ttype":ttype, "desc":desc, "time_req":time_req, "price":price, "discount":discount})
-    db.session.commit()
+    res = db.session.commit()
+    print("COMMIT: ", res)
     return True
 
 # Varauksen tietojen haku

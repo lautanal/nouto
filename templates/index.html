@@ -1,15 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="text">
-  <h1>Tervetuloa!</h1>
+  <h2>Tervetuloa!</h2>
   <p>
-    Tervetuloa Easynoudon ajanvaraukseen
-  </p>
-  <p>
+    Tervetuloa Easynoudon ajanvaraukseen<br>
     Easynouto noutaa vaivattomasti turhat tavarasi kotoa tai toimistolta.
   </p>
   <br>
-  <h2>Tee tilaus:</h2>
+  <h4>Tee tilaus:</h4>
   <form action="/ajanvaraus" method="post" onkeydown="return event.key != 'Enter';">
     <label for="noutolaji">Noudon tiedot:</label><br>
     <select id="noutolaji" name="noutolaji" value={{ noutolaji }}>

@@ -2,7 +2,7 @@
 {% block content %}
     <div class="text">
 
-        <h3 id="schedule-heading">AJANVARAUS</h3>
+        <h2 id="schedule-heading">AJANVARAUS</h2>
         <br>
 
         <form action="/vahvistus/{{ viikko_nr }}" method="post" onkeydown="return event.key != 'Enter';">
@@ -12,21 +12,23 @@
             <input type="hidden" name="kaupunki" value={{ kaupunki }}>
             <input type="hidden" name="p_extra" value={{ p_extra }}>
             
-            Noudon tiedot:
+            <h4>Noudon tiedot:</h4>
+            <p>
+                {% if noutolaji == "1" %} 1 esine {% endif %}
+                {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
+                {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
+                <br> 
+                {{ kuvaus }}
+            </p>
             <br>
-            {% if noutolaji == "1" %} 1 esine {% endif %}
-            {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
-            {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
-            <br> 
-            {{ kuvaus }}
-            <br><br>
-            Noutoalue:<br>
-            {{ postinumero }}  {{ kaupunki }}
+            <h4>Noutoalue:</h4>
+            <p>
+                {{ postinumero }}  {{ kaupunki }}
+            </p>
+            <br>
 
-
-            <br><br>
-            Valitse noudon ajankohta:
-            <br><br>
+            <h4>Valitse noudon ajankohta:</h4>
+            <br>
             <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">&nbsp &nbsp<-- Edellinen viikko</a>
             &nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp
             <a href="/seuraava/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">Seuraava viikko --></a>
@@ -50,7 +52,7 @@
                     <th>Pe</th>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th>klo</th>
                     <th>{{ paivat[0][0].day }}.{{ paivat[0][0].month }}.</th>
                     <th>{{ paivat[1][0].day }}.{{ paivat[1][0].month }}.</th>
                     <th>{{ paivat[2][0].day }}.{{ paivat[2][0].month }}.</th>
@@ -58,42 +60,41 @@
                     <th>{{ paivat[4][0].day }}.{{ paivat[4][0].month }}.</th>
                 </tr>
                 <tr>
-                    <td>Klo 08-11</td>
-                    <td>{% if varattu[0] == 0 %} <input type="radio" name="aika" value="0" {% if valinta == 0 %}checked="checked"{% endif %}> {{ hinnat[0]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[4] == 0 %} <input type="radio" name="aika" value="4" {% if valinta == 4 %}checked="checked"{% endif %}> {{ hinnat[4]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[8] == 0 %} <input type="radio" name="aika" value="8" {% if valinta == 8 %}checked="checked"{% endif %}> {{ hinnat[8]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[12] == 0 %} <input type="radio" name="aika" value="12" {% if valinta == 12 %}checked="checked"{% endif %}> {{ hinnat[12]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[16] == 0 %} <input type="radio" name="aika" value="16" {% if valinta == 16 %}checked="checked"{% endif %}> {{ hinnat[16]}}€ {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>08-11</td>
+                    <td>{% if varattu[0] == 0 %} <input type="radio" name="aika" value="0" {% if valinta == 0 %}checked="checked"{% endif %}> {{ hinnat[0]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[4] == 0 %} <input type="radio" name="aika" value="4" {% if valinta == 4 %}checked="checked"{% endif %}> {{ hinnat[4]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[8] == 0 %} <input type="radio" name="aika" value="8" {% if valinta == 8 %}checked="checked"{% endif %}> {{ hinnat[8]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[12] == 0 %} <input type="radio" name="aika" value="12" {% if valinta == 12 %}checked="checked"{% endif %}> {{ hinnat[12]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[16] == 0 %} <input type="radio" name="aika" value="16" {% if valinta == 16 %}checked="checked"{% endif %}> {{ hinnat[16]}}€ {% else %} {% endif %}</td>
                 </tr>
                 <tr></tr>
                 <tr>
-                    <td>Klo 11-14</td>
-                    <td>{% if varattu[1] == 0 %} <input type="radio" name="aika" value="1" {% if valinta == 1 %}checked="checked"{% endif %}> {{ hinnat[1]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[5] == 0 %} <input type="radio" name="aika" value="5" {% if valinta == 5 %}checked="checked"{% endif %}> {{ hinnat[5]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[9] == 0 %} <input type="radio" name="aika" value="9" {% if valinta == 9 %}checked="checked"{% endif %}> {{ hinnat[9]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[13] == 0 %} <input type="radio" name="aika" value="13" {% if valinta == 13 %}checked="checked"{% endif %}> {{ hinnat[13]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[17] == 0 %} <input type="radio" name="aika" value="17" {% if valinta == 17 %}checked="checked"{% endif %}> {{ hinnat[17]}}€ {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>11-14</td>
+                    <td>{% if varattu[1] == 0 %} <input type="radio" name="aika" value="1" {% if valinta == 1 %}checked="checked"{% endif %}> {{ hinnat[1]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[5] == 0 %} <input type="radio" name="aika" value="5" {% if valinta == 5 %}checked="checked"{% endif %}> {{ hinnat[5]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[9] == 0 %} <input type="radio" name="aika" value="9" {% if valinta == 9 %}checked="checked"{% endif %}> {{ hinnat[9]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[13] == 0 %} <input type="radio" name="aika" value="13" {% if valinta == 13 %}checked="checked"{% endif %}> {{ hinnat[13]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[17] == 0 %} <input type="radio" name="aika" value="17" {% if valinta == 17 %}checked="checked"{% endif %}> {{ hinnat[17]}}€ {% else %} {% endif %}</td>
                 </tr> 
                 <tr></tr>
                 <tr>
-                    <td>Klo 14-17</td>
-                    <td>{% if varattu[2] == 0 %} <input type="radio" name="aika" value="2" {% if valinta == 2 %}checked="checked"{% endif %}> {{ hinnat[2]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[6] == 0 %} <input type="radio" name="aika" value="6" {% if valinta == 6 %}checked="checked"{% endif %}> {{ hinnat[6]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[10] == 0 %} <input type="radio" name="aika" value="10" {% if valinta == 10 %}checked="checked"{% endif %}> {{ hinnat[10]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[14] == 0 %} <input type="radio" name="aika" value="14" {% if valinta == 14 %}checked="checked"{% endif %}> {{ hinnat[14]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[18] == 0 %} <input type="radio" name="aika" value="18" {% if valinta == 18 %}checked="checked"{% endif %}> {{ hinnat[18]}}€ {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>14-17</td>
+                    <td>{% if varattu[2] == 0 %} <input type="radio" name="aika" value="2" {% if valinta == 2 %}checked="checked"{% endif %}> {{ hinnat[2]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[6] == 0 %} <input type="radio" name="aika" value="6" {% if valinta == 6 %}checked="checked"{% endif %}> {{ hinnat[6]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[10] == 0 %} <input type="radio" name="aika" value="10" {% if valinta == 10 %}checked="checked"{% endif %}> {{ hinnat[10]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[14] == 0 %} <input type="radio" name="aika" value="14" {% if valinta == 14 %}checked="checked"{% endif %}> {{ hinnat[14]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[18] == 0 %} <input type="radio" name="aika" value="18" {% if valinta == 18 %}checked="checked"{% endif %}> {{ hinnat[18]}}€ {% else %} {% endif %}</td>
                 </tr>
                 <tr>
-                    <td>Klo 17-20</td>
-                    <td>{% if varattu[3] == 0 %} <input type="radio" name="aika" value="3" {% if valinta == 3 %}checked="checked"{% endif %}> {{ hinnat[3]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[7] == 0 %} <input type="radio" name="aika" value="7" {% if valinta == 7 %}checked="checked"{% endif %}> {{ hinnat[7]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[11] == 0 %} <input type="radio" name="aika" value="11" {% if valinta == 11 %}checked="checked"{% endif %}> {{ hinnat[11]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[15] == 0 %} <input type="radio" name="aika" value="15" {% if valinta == 15 %}checked="checked"{% endif %}> {{ hinnat[15]}}€ {% else %} TÄYNNÄ {% endif %}</td>
-                    <td>{% if varattu[19] == 0 %} <input type="radio" name="aika" value="19" {% if valinta == 19 %}checked="checked"{% endif %}> {{ hinnat[19]}}€ {% else %} TÄYNNÄ {% endif %}</td>
+                    <td>17-20</td>
+                    <td>{% if varattu[3] == 0 %} <input type="radio" name="aika" value="3" {% if valinta == 3 %}checked="checked"{% endif %}> {{ hinnat[3]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[7] == 0 %} <input type="radio" name="aika" value="7" {% if valinta == 7 %}checked="checked"{% endif %}> {{ hinnat[7]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[11] == 0 %} <input type="radio" name="aika" value="11" {% if valinta == 11 %}checked="checked"{% endif %}> {{ hinnat[11]}}€ {% else %}  {% endif %}</td>
+                    <td>{% if varattu[15] == 0 %} <input type="radio" name="aika" value="15" {% if valinta == 15 %}checked="checked"{% endif %}> {{ hinnat[15]}}€ {% else %} {% endif %}</td>
+                    <td>{% if varattu[19] == 0 %} <input type="radio" name="aika" value="19" {% if valinta == 19 %}checked="checked"{% endif %}> {{ hinnat[19]}}€ {% else %}  {% endif %}</td>
                 </tr>
             </table>
             <br>
-            
             <input type="submit" value="Vahvista noutoaika">
                 
         </form>

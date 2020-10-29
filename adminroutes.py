@@ -88,7 +88,7 @@ def ad_register():
             username = request.form["username"]
             password = request.form["password"]
             if admins.register(username,password):
-                return redirect("/admin/menu")
+                return redirect("/admenu")
             else:
                 return render_template("error.html",message="Rekisteröinti ei onnistunut")
 

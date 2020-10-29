@@ -1,23 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="text">
-
-        <h3>VAHVISTUS TILAUKSESTA</h3>
+        <h2>VAHVISTUS TILAUKSESTA</h2>
         <br>
-
-        Noudon tiedot:
-        <br>
-        {% if noutolaji == "1" %} 1 esine {% endif %}
-        {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
-        {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
-        {% if noutolaji == "4" %} XL nouto {% endif %}
-        <br> 
-        {{ kuvaus }}
-        <br><br>
-        Hinta: {{ hinta }} €
-
-        <br><br>
-        Noudon ajankohta: 
+        <h4>Noudon tiedot:</h4>
+        <p>
+            {% if noutolaji == "1" %} 1 esine {% endif %}
+            {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
+            {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
+            {% if noutolaji == "4" %} XL nouto {% endif %}
+            <br> 
+            {{ kuvaus }}
+            <br>
+        </p>
+        <h4>Hinta:</h4>
+        <p>
+            {{ hinta }} €
+        </p>
+        <h4>Noudon ajankohta: </h4>
+        <p>
             {% if day_nr == 1 %}maanantai{% endif %}  
             {% if day_nr == 2 %}tiistai{% endif %}  
             {% if day_nr == 3 %}keskiviikko{% endif %}  
@@ -27,17 +28,17 @@
             {% if time_frame == "1" %} 8 - 11{% endif %}  
             {% if time_frame == "2" %} 11-14{% endif %}  
             {% if time_frame == "3" %} 14-17{% endif %}  
-            {% if time_frame == "4" %} 17-20{% endif %}  
-
-        <br><br>
-        Tilaajan tiedot:
-        <br>
-        Nimi: {{ nimi }}<br>
-        Osoite: {{ osoite }}<br>
-        Postinumero: {{ postinumero }}<br>
-        Postitoimipaikka: {{ kaupunki }}<br>
-        Puhelinnumero: {{ puhelin }}<br>
-        Email: {{ email }}<br>
-        Viesti Easynoudolle: {{ viesti }}<br>
+            {% if time_frame == "4" %} 17-20{% endif %} 
+        </p> 
+        <h4>Tilaajan tiedot:</h4>
+        <p>
+            Nimi: {{ nimi }}<br>
+            Osoite: {{ osoite }}<br>
+            Postinumero: {{ postinumero }}<br>
+            Postitoimipaikka: {{ kaupunki }}<br>
+            Puhelinnumero: {{ puhelin }}<br>
+            Email: {{ email }}<br>
+            Viesti Easynoudolle: {{ viesti }}<br>
+        </p>
     </div>
 {% endblock content %}

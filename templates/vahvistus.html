@@ -2,7 +2,7 @@
 {% block content %}
     <div class="text">
 
-        <h3 id="schedule-heading">TILAUKSEN VAHVISTUS</h3>
+        <h2 id="schedule-heading">TILAUKSEN VAHVISTUS</h2>
         <br>
 
         <form action="/sendcust" method="post" onkeydown="return event.key != 'Enter';">
@@ -14,15 +14,16 @@
             <input type="hidden" name="postinumero" value={{ postinumero }}>
             <input type="hidden" name="kaupunki" value={{ kaupunki }}>
 
-            Noudon tiedot:
-            <br>
-            {% if noutolaji == "1" %} 1 esine {% endif %}
-            {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
-            {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
-            <br>
-            {{ kuvaus }}
-            <br><br>
-            Noudon ajankohta: 
+            <h4>Noudon tiedot:</h4>
+            <p>
+                {% if noutolaji == "1" %} 1 esine {% endif %}
+                {% if noutolaji == "2" %} 2-3 esinettä {% endif %}
+                {% if noutolaji == "3" %} 30 minuutin nouto {% endif %}
+                <br>
+                {{ kuvaus }}
+            </p>
+            <h4>Noudon ajankohta:</h4>
+            <p>
                 {% if day_nr == 1 %}maanantai{% endif %}  
                 {% if day_nr == 2 %}tiistai{% endif %}  
                 {% if day_nr == 3 %}keskiviikko{% endif %}  
@@ -32,25 +33,27 @@
                 {% if time_frame == 1 %} 8 - 11{% endif %}  
                 {% if time_frame == 2 %} 11-14{% endif %}  
                 {% if time_frame == 3 %} 14-17{% endif %}  
-                {% if time_frame == 4 %} 17-20{% endif %}  
-                <br><br>
-            Hinta: {{ hinta }} €
-            <br><br>
-            Tilaajan tiedot:
-            <br><br>
-            Nimi:<br><input type="text" name="nimi" value={{ nimi }}><br>
-            Katuosoite:<br><input type="text" name="osoite" value={{ osoite }}> &nbsp &nbsp {{ postinumero }} &nbsp {{ kaupunki }} <br>
-            Puhelinnumero:<BR><input type="number" name="puhelin" value={{ puhelin }}><br>
-            Email: <br><input type="email" name="email" value={{ email }}><br>
-            Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea>
-            <br><br>
+                {% if time_frame == 4 %} 17-20{% endif %}
+            </p>  
+            <h4>Hinta:</h4>
+            <p>
+                {{ hinta }} €
+            </p>
+            <h4>Tilaajan tiedot:</h4>
+            <p>
+                Nimi:<br><input type="text" name="nimi" value={{ nimi }}><br>
+                Katuosoite:<br><input type="text" name="osoite" value={{ osoite }}> &nbsp &nbsp {{ postinumero }} &nbsp {{ kaupunki }} <br>
+                Puhelinnumero:<BR><input type="number" name="puhelin" value={{ puhelin }}><br>
+                Email: <br><input type="email" name="email" value={{ email }}><br>
+                Viesti Easynoudolle:<bR><textarea name="viesti" rows="3" Cols="80"></textarea>
+            </p>
+            <br>
             <input type="checkbox" id="ehdot" name="ehdot">
-            <label for="ehdot">Hyväksyn <a href="#">palveluehdot</a></label>
+            <label for="ehdot">Hyväksyn <a href="https://www.easynouto.fi/palveluehdot/">palveluehdot</a></label>
             <br>
             <input type="submit" value="Vahvista tilaus">
             <br>
             <div style="color:red;" >{{ error }}</div>
-                
         </form>
     </div>
 {% endblock content %}

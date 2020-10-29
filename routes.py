@@ -1,8 +1,15 @@
 from app import app
+from flask_mail import Mail, Message
 from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
-import users, cal, customers, orders, prices, admins
+import users, cal, customers, orders, prices, admins, sendmail
 
+@app.route("/email")
+def emailtest():
+    receipient = "lasselautanala@gmail.com"
+    msg = "Heippa, tämä on Easynoudon 5. testilähetys"
+    sendmail.emailtest(receipient,msg)
+    return "Sent"
 
 # Aloitus
 @app.route("/")
@@ -64,9 +71,9 @@ def ajanvaraus():
 
     viikko_nr = cal.get_week()
     paivat = cal.get_days(viikko_nr)
-    max_var = 2
+    max_var = 135
     if noutolaji == "3":
-        max_var = 1
+        max_var = 120
     varaukset = orders.check_orders(viikko_nr, max_var)
     check = 19
     for slot in range(20):
@@ -88,9 +95,9 @@ def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki, p_extr
             viikko_nr = cal.get_next_week(viikko_nr)
 
     paivat = cal.get_days(viikko_nr)
-    max_var = 2
+    max_var = 135
     if noutolaji == "3":
-        max_var = 1
+        max_var = 120
     varaukset = orders.check_orders(viikko_nr, max_var)
     check = 1
     for slot in range(20):
@@ -112,9 +119,9 @@ def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki, p_ext
             viikko_nr = cal.get_prev_week(viikko_nr)
 
     paivat = cal.get_days(viikko_nr)
-    max_var = 2
+    max_var = 135
     if noutolaji == "3":
-        max_var = 1
+        max_var = 120
     varaukset = orders.check_orders(viikko_nr, max_var)
     check = 19
     for slot in range(20):
@@ -181,10 +188,12 @@ def sendcust():
         return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, day_nr=day_nr, pvm=pvm, time_frame=time_frame, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
     cust_id = customers.insert(name, address, postcode, city, phone, email, instructions)
     orders.insert(cust_id, date_id, time_frame, ttype, desc, time_req, price, 0)
+    
+#    sendmail.email(email, "Tilausvahvistus\n" + str(pvm) + "\n" + name)
 
     return render_template("valmis.html", day_nr=day_nr, pvm=pvm, time_frame=time_frame, noutolaji=ttype, kuvaus=desc, hinta=price, nimi=name, osoite=address, postinumero=postcode, kaupunki=city, puhelin=phone, email=email, viesti=instructions)
 
-# Hinnat
+# Lisähinnat ja alennukset
 @app.route("/hinnat")
 def hinnat():
     if admins.admin_id() == 0:
