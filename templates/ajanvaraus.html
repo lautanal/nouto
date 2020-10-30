@@ -20,15 +20,11 @@
                 <br> 
                 {{ kuvaus }}
             </p>
-            <br>
             <h4>Noutoalue:</h4>
             <p>
                 {{ postinumero }}  {{ kaupunki }}
             </p>
-            <br>
-
             <h4>Valitse noudon ajankohta:</h4>
-            <br>
             <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">&nbsp &nbsp<-- Edellinen viikko</a>
             &nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp
             <a href="/seuraava/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">Seuraava viikko --></a>

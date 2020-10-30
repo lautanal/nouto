@@ -18,7 +18,7 @@ mail = Mail(app)
 
 def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
     msg = Message('TESTI: Easynouto tilausvahvistus', sender = "Easynouto", recipients = [email])
-    emsg = "TESTI--TILAUSVAHVISTUS\n\nNoudon tiedot: "
+    emsg = "TILAUSVAHVISTUS\n\nNoudon tiedot: "
     if ttype == "1":
         emsg = emsg + "\n1 esine\n"
     elif ttype == "2":
@@ -52,7 +52,7 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
     if not isBlank(email):
         mail.send(msg)
 
-    msg = Message('TESTATAAN EMAIL-ILMOITUSTA', sender = "Easynouto", recipients = [easynouto_email])
+    msg = Message('TILAUS', sender = "Easynouto", recipients = [easynouto_email])
     msg.body = emsg
     mail.send(msg)
 
