@@ -180,7 +180,7 @@ def sendcust():
     elif ttype == "3":
         time_req = 60
 
-    if isBlank(name) or isBlank(address) or isBlank(phone):
+    if isBlank(name) or isBlank(address) or isBlank(phone) or isBlank(email):
         error_message = "Täytä puuttuvat tiedot"
         return render_template("vahvistus.html", noutolaji=ttype, kuvaus=desc, postinumero=postcode, date_id=date_id, day_nr=day_nr, time_frame=time_frame, pvm=pvm, hinta=price, nimi=name, osoite=address,  kaupunki=city, puhelin=phone, email=email, error=error_message)
     if not accepted:
