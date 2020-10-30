@@ -44,7 +44,9 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
         emsg = emsg + " klo 14-17 \nTilaaja:\n"
     elif time_frame == "4":
         emsg = emsg + " klo 17-20 \nTilaaja:\n"
-    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nOhjeet:\n" + instructions    
+    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone
+    if not isBlank(instructions):
+        emsg = emsg + "\nOhjeet:\n" + instructions    
     emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nPuhelin: 044 7300 370\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
     msg.body = emsg2
     if not isBlank(email):
@@ -52,7 +54,7 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
 
     msg = Message('TESTATAAN EMAIL-ILMOITUSTA', sender = "Easynouto", recipients = [easynouto_email])
     msg.body = emsg
-#    mail.send(msg)
+    mail.send(msg)
 
     return "Sent"
 
