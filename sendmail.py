@@ -17,8 +17,8 @@ app.config.update(mail_settings)
 mail = Mail(app)
 
 def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
-    msg = Message('TESTI: Easynouto varausvahvistus', sender = "Easynouto", recipients = [email])
-    emsg = "TESTI--VARAUSVAHVISTUS\n\nNoudon tiedot: "
+    msg = Message('TESTI: Easynouto tilausvahvistus', sender = "Easynouto", recipients = [email])
+    emsg = "TESTI--TILAUSVAHVISTUS\n\nNoudon tiedot: "
     if ttype == "1":
         emsg = emsg + "\n1 esine\n"
     elif ttype == "2":
@@ -45,12 +45,12 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
     elif time_frame == "4":
         emsg = emsg + " klo 17-20 \nTilaaja:\n"
     emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nOhjeet:\n" + instructions    
-    emsg2 = emsg + "\n\nEasynouto\nPuhelin: 044 7300 370\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
+    emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nPuhelin: 044 7300 370\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
     msg.body = emsg2
     mail.send(msg)
 
     msg = Message('TESTATAAN EMAIL-ILMOITUSTA', sender = "Easynouto", recipients = [easynouto_email])
     msg.body = emsg
-    mail.send(msg)
+#    mail.send(msg)
 
     return "Sent"
