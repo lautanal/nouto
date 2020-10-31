@@ -327,8 +327,8 @@ def poistovahvistus(o_id):
     if admins.admin_id() == 0:
         return render_template("adlogin.html", login="yes")
     else:
-        ol = orders.get_order_date(o_id)
-        orders.order_delete(o_id)
+        ol = orders.get_order_data(o_id)
+        orders.order_delete(o_id, ol[2])
 
         d_id = ol[0]
         pvm = ol[1]

@@ -63,15 +63,18 @@ def get_order(order_id):
     return result.fetchone()
 
 # Varauksen päivän haku
-def get_order_date(order_id):
-    sql = "SELECT O.date_id, C.date FROM orders O, calendar C WHERE C.id=O.date_id AND O.id=:order_id"
+def get_order_data(order_id):
+    sql = "SELECT O.date_id, C.date, O.customer_id FROM orders O, calendar C WHERE C.id=O.date_id AND O.id=:order_id"
     result = db.session.execute(sql, {"order_id":order_id})
     return result.fetchone()
 
-# Varauksen poisto tietokannasta (näkyvistä)
-def order_delete(order_id):
-    sql = "UPDATE orders SET deleted=TRUE WHERE id=:order_id"
+# Varauksen poisto tietokannasta
+def order_delete(order_id, customer_id):
+    sql = "DELETE FROM orders WHERE id=:order_id"
     db.session.execute(sql, {"order_id":order_id})
+    db.session.commit()
+    sql = "DELETE FROM customers WHERE id=:customer_id"
+    db.session.execute(sql, {"customer_id":customer_id})
     db.session.commit()
     return True
 

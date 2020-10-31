@@ -22,7 +22,7 @@
                 {% for task in tasks1 %}
                     <tr>
                         <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
                         <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
@@ -46,7 +46,7 @@
                 {% for task in tasks2 %}
                     <tr>
                         <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
                         <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
@@ -70,7 +70,7 @@
                 {% for task in tasks3 %}
                     <tr>
                         <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
                         <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
@@ -94,7 +94,7 @@
                 {% for task in tasks4 %}
                     <tr>
                         <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[0] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
+                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
                         <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
                     </tr>
                     <tr><td></td></tr>
