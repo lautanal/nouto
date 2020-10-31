@@ -17,7 +17,7 @@ app.config.update(mail_settings)
 mail = Mail(app)
 
 def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
-    msg = Message('TESTI: Easynouto tilausvahvistus', sender = "Easynouto", recipients = [email])
+    msg = Message('Easynouto tilausvahvistus', sender = "Easynouto", recipients = [email])
     emsg = "TILAUSVAHVISTUS\n\nNoudon tiedot: "
     if ttype == "1":
         emsg = emsg + "\n1 esine\n"
