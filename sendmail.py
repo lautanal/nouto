@@ -11,13 +11,14 @@ mail_settings = {
     "MAIL_USE_TLS": False,
     "MAIL_USE_SSL": True,
     "MAIL_USERNAME": email_address,
-    "MAIL_PASSWORD": psw
+    "MAIL_PASSWORD": psw,
+    "MAIL_DEFAULT_SENDER": easynouto_email
 }
 app.config.update(mail_settings)
 mail = Mail(app)
 
 def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, address, postcode, city, phone, instructions):
-    msg = Message('Easynouto tilausvahvistus', sender = "Easynouto", recipients = [email])
+    msg = Message("Easynouto tilausvahvistus", sender=("Easynouto", easynouto_email), recipients = [email])
     emsg = "TILAUSVAHVISTUS\n\nNoudon tiedot: "
     if ttype == "1":
         emsg = emsg + "\n1 esine\n"
@@ -49,11 +50,13 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
         emsg = emsg + "\nOhjeet:\n" + instructions    
     emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nPuhelin: 044 7300 370\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
     msg.body = emsg2
+    msg.reply_to = easynouto_email
     if not isBlank(email):
         mail.send(msg)
 
-    msg = Message('TILAUS', sender = "Easynouto", recipients = [easynouto_email])
+    msg = Message("TILAUS", sender=("Easynouto", easynouto_email), recipients = [easynouto_email])
     msg.body = emsg
+    msg.reply_to = easynouto_email
     mail.send(msg)
 
     return "Sent"
