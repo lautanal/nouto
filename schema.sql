@@ -35,6 +35,13 @@ CREATE TABLE prices (
     p3 INTEGER,
     p4 INTEGER
 );
-
+CREATE TABLE offtimes (
+    id SERIAL PRIMARY KEY,
+    date_id INTEGER REFERENCES calendar,
+    p1 INTEGER,
+    p2 INTEGER,
+    p3 INTEGER,
+    p4 INTEGER
+);
 
 

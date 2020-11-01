@@ -2,7 +2,7 @@ from app import app
 from flask_mail import Mail, Message
 from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
-import users, cal, customers, orders, prices, admins, sendmail
+import users, cal, customers, orders, prices, admins, sendmail, offtime
 
 @app.route("/email")
 def emailtest():
@@ -74,7 +74,8 @@ def ajanvaraus():
     max_var = 135
     if noutolaji == "3":
         max_var = 120
-    varaukset = orders.check_orders(viikko_nr, max_var)
+    varaukset = offtime.get_offtime(viikko_nr)
+    varaukset = orders.check_orders(viikko_nr, max_var, varaukset)
     check = 19
     for slot in range(20):
         if (varaukset[19-slot] == 0):
@@ -98,7 +99,8 @@ def seuraavaviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki, p_extr
     max_var = 135
     if noutolaji == "3":
         max_var = 120
-    varaukset = orders.check_orders(viikko_nr, max_var)
+    varaukset = offtime.get_offtime(viikko_nr)
+    varaukset = orders.check_orders(viikko_nr, max_var, varaukset)
     check = 1
     for slot in range(20):
         if (varaukset[19-slot] == 0):
@@ -122,7 +124,8 @@ def edellinenviikko(wnr, vdelta, noutolaji, kuvaus, postinumero, kaupunki, p_ext
     max_var = 135
     if noutolaji == "3":
         max_var = 120
-    varaukset = orders.check_orders(viikko_nr, max_var)
+    varaukset = offtime.get_offtime(viikko_nr)
+    varaukset = orders.check_orders(viikko_nr, max_var, varaukset)
     check = 19
     for slot in range(20):
         if (varaukset[19-slot] == 0):
@@ -339,6 +342,104 @@ def poistovahvistus(o_id):
         tlist3 = orders.get_work_list(d_id, 3)
         tlist4 = orders.get_work_list(d_id, 4)
         return render_template("varaukset.html", date_id=d_id, pvm=pvm, day_nr=day_nr, tasks1=tlist1, tasks2=tlist2, tasks3=tlist3, tasks4=tlist4)
+
+# Vapaa-päivät ja slotit
+@app.route("/vapaat")
+def vapaat():
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr = cal.get_week()
+        paivat = cal.get_days(viikko_nr)
+        offlist = offtime.get_offtime(viikko_nr)
+
+        return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=0, paivat=paivat, offlist=offlist)
+
+@app.route("/vapaats/<int:wnr>/<int:vdelta>")
+def vapaats(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr=int(wnr)
+        if (vdelta < 12):
+            vdelta += 1
+            if (viikko_nr % 100 < 52):
+                viikko_nr += 1
+            else:
+                viikko_nr = cal.get_next_week(viikko_nr)
+        paivat = cal.get_days(viikko_nr)
+        offlist = offtime.get_offtime(viikko_nr)
+
+        return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, offlist=offlist)
+
+@app.route("/vapaate/<int:wnr>/<int:vdelta>")
+def vapaate(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        viikko_nr=int(wnr)
+        if vdelta > 0:
+            vdelta -= 1
+            if (viikko_nr % 100 > 1):
+                viikko_nr -= 1
+            else:
+                viikko_nr = cal.get_prev_week(viikko_nr)
+        paivat = cal.get_days(viikko_nr)
+        offlist = offtime.get_offtime(viikko_nr)
+
+        return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, offlist=offlist)
+
+@app.route("/vapaat/<int:wnr>/<int:vdelta>", methods=["post"])
+def vapaat_talletus(wnr, vdelta):
+    if admins.admin_id() == 0:
+        return render_template("adloginh.html", login="yes")
+    else:
+        offlist = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        if request.form.get("ma1"):
+            offlist[0] = 1
+        if request.form.get("ma2"):
+            offlist[1] = 1
+        if request.form.get("ma3"):
+            offlist[2] = 1
+        if request.form.get("ma4"):
+            offlist[3] = 1
+        if request.form.get("ti1"):
+            offlist[4] = 1
+        if request.form.get("ti2"):
+            offlist[5] = 1
+        if request.form.get("ti3"):
+            offlist[6] = 1
+        if request.form.get("ti4"):
+            offlist[7] = 1
+        if request.form.get("ke1"):
+            offlist[8] = 1
+        if request.form.get("ke2"):
+            offlist[9] = 1
+        if request.form.get("ke3"):
+            offlist[10] = 1
+        if request.form.get("ke4"):
+            offlist[11] = 1
+        if request.form.get("to1"):
+            offlist[12] = 1
+        if request.form.get("to2"):
+            offlist[13] = 1
+        if request.form.get("to3"):
+            offlist[14] = 1
+        if request.form.get("to4"):
+            offlist[15] = 1
+        if request.form.get("pe1"):
+            offlist[16] = 1
+        if request.form.get("pe2"):
+            offlist[17] = 1
+        if request.form.get("pe3"):
+            offlist[18] = 1
+        if request.form.get("pe4"):
+            offlist[19] = 1
+#        print("VAPAAT: ", offlist)
+        paivat = cal.get_days(wnr)
+        offtime.update(wnr, paivat[0][1], offlist)
+        
+        return render_template("vapaat.html", viikko_nr=wnr, vdelta=vdelta, paivat=paivat, offlist=offlist, msg="Vapaat päivitetty")
 
 # Kalenterin täyttö
 @app.route("/cal")

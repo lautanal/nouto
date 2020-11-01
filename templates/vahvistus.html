@@ -5,7 +5,7 @@
         <h2 id="schedule-heading">TILAUKSEN VAHVISTUS</h2>
         <br>
 
-        <form action="/sendcust" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/sendcust" method="post" onkeydown="return event.key != 'Enter';"  onsubmit="vahvistus.disabled = true; return true;">
             <input type="hidden" name="noutolaji" value={{ noutolaji }}>
             <input type="hidden" name="kuvaus" value="{{ kuvaus }}">
             <input type="hidden" name="date_id" value={{ date_id }}>
@@ -51,7 +51,7 @@
             <input type="checkbox" id="ehdot" name="ehdot">
             <label for="ehdot">Hyväksyn <a href="https://www.easynouto.fi/palveluehdot/">palveluehdot</a></label>
             <br>
-            <input type="submit" value="Vahvista tilaus">
+            <input type="submit" name="vahvistus" value="Vahvista tilaus">
             <br>
             <div style="color:red;" >{{ error }}</div>
         </form>

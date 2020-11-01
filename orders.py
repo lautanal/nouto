@@ -10,8 +10,8 @@ def get_work_list(date_id, time_frame):
     return olist
 
 # Viikon varausten tarkistus
-def check_orders(week_nr, max):
-    varaukset = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+def check_orders(week_nr, max, varaukset):
+#    varaukset = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     sql = "SELECT C.day_nr, O.time_frame, SUM(time_required) FROM calendar C, orders O " \
         "WHERE C.week_nr=:week_nr AND C.day_nr < 6 AND O.date_id=C.id AND O.deleted IS NULL GROUP BY C.id, C.day_nr, O.time_frame"
     result = db.session.execute(sql, {"week_nr":week_nr})

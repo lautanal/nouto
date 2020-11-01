@@ -58,6 +58,20 @@ def ad_loginv():
             error = "Väärä tunnus tai salasana"
             return render_template("adloginv.html", login="yes", error=error)
 
+# Admin login vapaat
+@app.route("/adloginvap", methods=["get","post"])
+def ad_loginvap():
+    if request.method == "GET":
+        return render_template("adloginvap.html", login="yes")
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if admins.login(username,password):
+            return redirect("/vapaat")
+        else:
+            error = "Väärä tunnus tai salasana"
+            return render_template("adloginvap.html", login="yes", error=error)
+
 # Admin logout
 @app.route("/adlogout")
 def ad_logout():
@@ -75,6 +89,12 @@ def ad_logouth():
 def ad_logoutv():
     admins.logout()
     return render_template("adlogoutv.html", login="yes")
+
+# Admin logout
+@app.route("/adlogoutvap")
+def ad_logoutvap():
+    admins.logout()
+    return render_template("adlogoutvap.html", login="yes")
 
 # Uusi admin käyttäjä
 @app.route("/adregister", methods=["get","post"])

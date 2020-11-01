@@ -5,7 +5,7 @@
         <h2 id="schedule-heading">AJANVARAUS</h2>
         <br>
 
-        <form action="/vahvistus/{{ viikko_nr }}" method="post" onkeydown="return event.key != 'Enter';">
+        <form action="/vahvistus/{{ viikko_nr }}" method="POST" onkeydown="return event.key != 'Enter';">
             <input type="hidden" name="noutolaji" value={{ noutolaji }}>
             <input type="hidden" name="kuvaus" value="{{ kuvaus }}">
             <input type="hidden" name="postinumero" value={{ postinumero }}>
@@ -25,8 +25,9 @@
                 {{ postinumero }}  {{ kaupunki }}
             </p>
             <h4>Valitse noudon ajankohta:</h4>
-            <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}"><-- Edellinen </a>
-                &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp
+            <a href="/edellinen/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">&nbsp &nbsp<-- Edellinen</a>
+<!--            <span style="font-size:25px;"> -->
+            &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp
             <a href="/seuraava/{{ viikko_nr }}/{{ vdelta }}/{{ noutolaji }}/{{ kuvaus }}/{{ postinumero }}/{{ kaupunki }}/{{ p_extra }}">Seuraava --></a>
             <br><br>
 

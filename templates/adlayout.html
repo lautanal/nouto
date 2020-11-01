@@ -4,26 +4,29 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
-    <style>
-      .text {
-        max-width: 750px;
-        font-size: 18px;
-        margin: 0 auto 50px;
-      }
-      
-      .header {
-        background: sandybrown;
-        font-weight: bold;
-        padding: 2em 1em;
-        font-size: 2em;
-      }
-    </style>
 
-    <title>Easynouto</title>
+  <style>
+    .text {
+      max-width: 750px;
+      font-size: 18px;
+      margin: 0 auto 50px;
+    }
+    .header {
+      font-weight: bold;
+      padding: 2em 1em;
+      font-size: 2em;
+      background-image: url(https://www.easynouto.fi/wp-content/uploads/2020/10/Stock-MovingBoxes.jpg);
+    }
+    .navbar {
+      background: lightgrey;
+    }
+  </style>
+
+  <title>Easynouto</title>
 </head>
 
 <body>
@@ -43,10 +46,13 @@
               <a class="nav-link" href="/adlogout">Logout</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/varaukset">Kalenteri</a>
+              <a class="nav-link" href="/varaukset">Varauskalenteri</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/hinnat">Päivähinnat</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/vapaat">Vapaat</a>
             </li>
           {% endif %}
         </ul>

@@ -1,0 +1,85 @@
+{% extends "adlayoutvap.html" %}
+{% block content %}
+    <div class="text">
+
+        <h2 id="schedule-heading">VAPAA-AIKOJEN VALINTA</h2>
+        <br>
+
+        <form action="/vapaat/{{ viikko_nr }}/{{ vdelta }}" method="post" onkeydown="return event.key != 'Enter';">
+            
+            <h4>Valitse vapaat:</h4>
+            <a href="/vapaate/{{ viikko_nr }}/{{ vdelta }}">&nbsp &nbsp<-- Edellinen viikko</a>
+            <span style="font-size:25px;">
+                &nbsp &nbsp VIIKKO {{ viikko_nr % 100}} &nbsp &nbsp
+            </span>
+            <a href="/vapaats/{{ viikko_nr }}/{{ vdelta }}">Seuraava viikko --></a>
+            <br><br>
+
+            <table style="width:100%">
+                <colgroup>
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                    <col style="background-color:azure">
+                    <col style="background-color:lightgrey">
+                </colgroup>
+                <tr>
+                    <th></th>
+                    <th>Ma</th>
+                    <th>Ti</th>
+                    <th>Ke</th>
+                    <th>To</th>
+                    <th>Pe</th>
+                </tr>
+                <tr>
+                    <th>klo</th>
+                    <th>{{ paivat[0][0].day }}.{{ paivat[0][0].month }}.</th>
+                    <th>{{ paivat[1][0].day }}.{{ paivat[1][0].month }}.</th>
+                    <th>{{ paivat[2][0].day }}.{{ paivat[2][0].month }}.</th>
+                    <th>{{ paivat[3][0].day }}.{{ paivat[3][0].month }}.</th>
+                    <th>{{ paivat[4][0].day }}.{{ paivat[4][0].month }}.</th>
+                </tr>
+                <tr>
+                    <td>08-11</td>
+                    <td><input type="checkbox" name="ma1" {% if offlist[0] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ti1" {% if offlist[4] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ke1" {% if offlist[8] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="to1" {% if offlist[12] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="pe1" {% if offlist[16] == 1 %}checked="checked"{% endif %}></td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>11-14</td>
+                    <td><input type="checkbox" name="ma2" {% if offlist[1] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ti2" {% if offlist[5] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ke2" {% if offlist[9] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="to2" {% if offlist[13] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="pe2" {% if offlist[17] == 1 %}checked="checked"{% endif %}></td>
+                </tr> 
+                <tr></tr>
+                <tr>
+                    <td>14-17</td>
+                    <td><input type="checkbox" name="ma3" {% if offlist[2] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ti3" {% if offlist[6] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ke3" {% if offlist[10] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="to3" {% if offlist[14] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="pe3" {% if offlist[18] == 1 %}checked="checked"{% endif %}></td>
+                </tr>
+                <tr>
+                    <td>17-20</td>
+                    <td><input type="checkbox" name="ma4" {% if offlist[3] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ti4" {% if offlist[7] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="ke4" {% if offlist[11] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="to4" {% if offlist[15] == 1 %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" name="pe4" {% if offlist[19] == 1 %}checked="checked"{% endif %}></td>
+                </tr>
+            </table>
+            <br>
+            <p>Merkitse halutut vapaajaksot (ei noutoja)</p>
+            <input type="submit" value="Vahvista vapaiden muutokset">
+            <div style="color:red;" >{{ msg }}</div>
+                
+        </form>
+    </div>
+{% endblock content %}

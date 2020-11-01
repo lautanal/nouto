@@ -1,116 +1,93 @@
 {% extends "adlayoutv.html" %}
 {% block content %}
-    <div>
+    <div class="text">
 
         <br>
         <h3>VARAUSKALENTERI</h3>
         <br>
 
-            <a href="/varaukset/{{ date_id}}/1"> &nbsp &nbsp <-- Edellinen päivä </a>  &nbsp &nbsp
-                {% if day_nr == 1 %}maanantai{% endif %}  
-                {% if day_nr == 2 %}tiistai{% endif %}  
-                {% if day_nr == 3 %}keskiviikko{% endif %}  
-                {% if day_nr == 4 %}torstai{% endif %}  
-                {% if day_nr == 5 %}perjantai{% endif %}  
-            {{ pvm.day }}.{{pvm.month }}.{{pvm.year }} &nbsp &nbsp <a href="/varaukset/{{ date_id}}/2"> Seuraava päivä --> </a>
+            <a href="/varaukset/{{ date_id}}/1">
+                &nbsp &nbsp <-- Edellinen </a> &nbsp &nbsp
+                <span style="font-size:25px;">
+                    {% if day_nr == 1 %}maanantai{% endif %}  
+                    {% if day_nr == 2 %}tiistai{% endif %}  
+                    {% if day_nr == 3 %}keskiviikko{% endif %}  
+                    {% if day_nr == 4 %}torstai{% endif %}  
+                    {% if day_nr == 5 %}perjantai{% endif %}
+                    {{ pvm.day }}.{{pvm.month }}.{{pvm.year }}
+                </span>
+                &nbsp &nbsp
+            <a href="/varaukset/{{ date_id}}/2"> Seuraava --> </a>
 
             <br><br>
 
-            Klo 08-11
-            <br><br>
-            <table style="width:100%">
+            <hr style="border:1px solid;">
+            <h5>Klo 08-11</h5>
+            <p>
                 {% for task in tasks1 %}
-                    <tr>
-                        <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>Osoite:</td> <td>{{ task[4]}}</td> <td>{{ task[5]}} {{ task[6]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Tilaaja:</td> <td>{{ task[7]}}</td> <td>Puhelin: {{ task[8]}} </td><td>Email: {{ task[9]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ohjeet:</td> <td>{{ task[10]}} </td>
-                    </tr>                    
-                    <tr><td><br></td></tr>
+                    <hr>
+                    Osoite: {{ task[4]}} {{ task[5]}} {{ task[6]}}<br>
+                    Noutotyyppi: {% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}<br>
+                    Mitä haetaan: {{ task[2]}}<br>
+                    Hinta: {{ task[3]}} €<br>
+                    Tilaaja: {{ task[7]}}<br>
+                    Puhelin: {{ task[8]}}<br>
+                    Email: {{ task[9]}}<br>
+                    {% if task[10] != "" %}Ohjeet: {{ task[10]}}<br>{% endif %}
+                    <a href="/poista/{{ task[0] }}">Poista</a>
                 {% endfor %}
-            </table>
-            <br>
+            </p>
 
-            Klo 11-14
-            <br><br>
-            <table style="width:100%">
+            <hr style="border:1px solid;">
+            <h5>Klo 11-14</h5>
+            <p>
                 {% for task in tasks2 %}
-                    <tr>
-                        <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>Osoite:</td> <td>{{ task[4]}}</td> <td>{{ task[5]}} {{ task[6]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Tilaaja:</td> <td>{{ task[7]}}</td> <td>Puhelin: {{ task[8]}} </td><td>Email: {{ task[9]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ohjeet:</td> <td>{{ task[10]}} </td>
-                    </tr>                    
-                    <tr><td><br></td></tr>
+                    <hr>
+                    Osoite: {{ task[4]}} {{ task[5]}} {{ task[6]}}<br>
+                    Noutotyyppi: {% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}<br>
+                    Mitä haetaan: {{ task[2]}}<br>
+                    Hinta: {{ task[3]}} €<br>
+                    Tilaaja: {{ task[7]}}<br>
+                    Puhelin: {{ task[8]}}<br>
+                    Email: {{ task[9]}}<br>
+                    {% if task[10] != "" %}Ohjeet: {{ task[10]}}<br>{% endif %}
+                    <a href="/poista/{{ task[0] }}">Poista</a>
                 {% endfor %}
-            </table>
-            <br>
+            </p>
 
-            Klo 14-17
-            <br><br>
-            <table style="width:100%">
+            <hr style="border:1px solid;">
+            <h5>Klo 14-17</h5>
+            <p>
                 {% for task in tasks3 %}
-                    <tr>
-                        <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>Osoite:</td> <td>{{ task[4]}}</td> <td>{{ task[5]}} {{ task[6]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Tilaaja:</td> <td>{{ task[7]}}</td> <td>Puhelin: {{ task[8]}} </td><td>Email: {{ task[9]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ohjeet:</td> <td>{{ task[10]}} </td>
-                    </tr>                    
-                    <tr><td><br></td></tr>
+                    <hr>
+                    Osoite: {{ task[4]}} {{ task[5]}} {{ task[6]}}<br>
+                    Noutotyyppi: {% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}<br>
+                    Mitä haetaan: {{ task[2]}}<br>
+                    Hinta: {{ task[3]}} €<br>
+                    Tilaaja: {{ task[7]}}<br>
+                    Puhelin: {{ task[8]}}<br>
+                    Email: {{ task[9]}}<br>
+                    {% if task[10] != "" %}Ohjeet: {{ task[10]}}<br>{% endif %}
+                    <a href="/poista/{{ task[0] }}">Poista</a>
                 {% endfor %}
-            </table>
-            <br>
+            </p>
 
-            Klo 17-20
-            <br><br>
-            <table style="width:100%">
+            <hr style="border:1px solid;">
+            <h5>Klo 17-20</h5>
+            <p>
                 {% for task in tasks4 %}
-                    <tr>
-                        <td>Noutotyyppi:</td>
-                        <td>{% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}</td>
-                        <td>Kuvaus: {{ task[2]}}</td> <td>Hinta: {{ task[3]}} €</td><td><a href="/poista/{{ task[0] }}">Poista</a></td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>Osoite:</td> <td>{{ task[4]}}</td> <td>{{ task[5]}} {{ task[6]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Tilaaja:</td> <td>{{ task[7]}}</td> <td>Puhelin: {{ task[8]}} </td><td>Email: {{ task[9]}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ohjeet:</td> <td>{{ task[10]}} </td>
-                    </tr>                    
-                    <tr><td><br></td></tr>
+                    <hr>
+                    Osoite: {{ task[4]}} {{ task[5]}} {{ task[6]}}<br>
+                    Noutotyyppi: {% if task[1] == 1 %}Yksi esine{% elif task[1] == 2 %}2-3 esinettä{% else %}30min nouto{% endif %}<br>
+                    Mitä haetaan: {{ task[2]}}<br>
+                    Hinta: {{ task[3]}} €<br>
+                    Tilaaja: {{ task[7]}}<br>
+                    Puhelin: {{ task[8]}}<br>
+                    Email: {{ task[9]}}<br>
+                    {% if task[10] != "" %}Ohjeet: {{ task[10]}}<br>{% endif %}
+                    <a href="/poista/{{ task[0] }}">Poista</a>
                 {% endfor %}
-            </table>
-            <br>
+            </p>
             
     </div>
 {% endblock content %}
