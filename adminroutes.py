@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, flash
 import admins
 
 # Admin aloitus
-@app.route("/admin")
+@app.route("/hallinta")
 def admin():
     return render_template("adlogin.html", login="yes")
 

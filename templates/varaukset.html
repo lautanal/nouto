@@ -7,7 +7,7 @@
         <br>
 
             <a href="/varaukset/{{ date_id}}/1">
-                &nbsp &nbsp <-- Edellinen </a> &nbsp &nbsp
+                <-- Edellinen </a> &nbsp
                 <span style="font-size:25px;">
                     {% if day_nr == 1 %}maanantai{% endif %}  
                     {% if day_nr == 2 %}tiistai{% endif %}  
@@ -16,7 +16,7 @@
                     {% if day_nr == 5 %}perjantai{% endif %}
                     {{ pvm.day }}.{{pvm.month }}.{{pvm.year }}
                 </span>
-                &nbsp &nbsp
+                &nbsp
             <a href="/varaukset/{{ date_id}}/2"> Seuraava --> </a>
 
             <br><br>
