@@ -12,6 +12,8 @@ def prices(week_nr, day_id, noutolaji, city, p_extra):
     elif(noutolaji == "3"):
         hinnat = [169,149,149,169,169,149,149,169,169,149,149,169,169,149,149,169,169,149,149,169]
         alin_hinta = 149
+
+# Pidemmän haun lisämaksu
     for i in range(20):
         hinnat[i] = hinnat[i] + p_extra
 
@@ -49,8 +51,12 @@ def prices(week_nr, day_id, noutolaji, city, p_extra):
         d_id = ol[0]
         iday = int(ol[1])
         itfr = int(ol[2])
-        if hinnat[(iday-1)*4 + itfr -1] > alin_hinta:
-            hinnat[(iday-1)*4 + itfr -1] -= 10 
+        hinnat[(iday-1)*4 + itfr -1] -= 10
+
+# Tarkistetaan, ettei mennä perushinnan alle 
+    for i in range(20):
+        if hinnat[i] < alin_hinta:
+            hinnat[i] = alin_hinta
 
     return hinnat
 
@@ -65,8 +71,11 @@ def get_price(day_id, time_frame, noutolaji, city, p_extra):
     elif(noutolaji == "3"):
         price = 149
         lowest_price = 149;
+
+# Pitkän matkan erikoishinta
     price = price + p_extra
-    today_id = cal.get_today_id()
+
+# Aamu ja iltahaun erikoishinta
     if time_frame == 1 or time_frame == 4:
         price += 20
 
@@ -78,6 +87,7 @@ def get_price(day_id, time_frame, noutolaji, city, p_extra):
         price += add[0]
 
 # Lisämaksu jos tilaus alle viikon päässä
+    today_id = cal.get_today_id()
     if (day_id - today_id < 8):
         price += 10
 
@@ -85,8 +95,12 @@ def get_price(day_id, time_frame, noutolaji, city, p_extra):
         sql = "SELECT DISTINCT O.date_id, O.time_frame from orders O, customers U " \
             "WHERE O.date_id=:day_id AND O.time_frame=:time_frame AND O.customer_id=U.id AND U.city=:city AND O.deleted IS NULL "
         result = db.session.execute(sql, {"day_id":day_id, "time_frame":time_frame, "city":city})
-        if result.fetchone() and price > lowest_price:
+        if result.fetchone():
             price -= 10
+
+# Tarkistetaan, ettei mennä perushinnan alle
+    if price < lowest_price:
+        price = lowest_price
 
     return price
 

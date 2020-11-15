@@ -4,16 +4,15 @@ from flask import render_template, request, redirect, flash, Markup
 from datetime import date, timedelta
 import users, cal, customers, orders, prices, admins, sendmail, offtime
 
-@app.route("/email")
-def emailtest():
-    receipient = "lasselautanala@gmail.com"
-    msg = "Heippa, tämä on Easynoudon 5. testilähetys"
-#    sendmail.emailtest(receipient,msg)
-    return "Sent"
 
 # Aloitus
 @app.route("/")
-def index():
+def tilaus1():
+    return render_template("index.html")
+
+# Aloitus
+@app.route("/teetilaus")
+def tilaus2():
     return render_template("index.html")
 
 # Info
