@@ -48,7 +48,7 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
     emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone
     if not isBlank(instructions):
         emsg = emsg + "\nOhjeet:\n" + instructions    
-    emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nPuhelin: 0600391500 (€0.05+ppm)\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
+    emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nInfopuhelin: 0600391500 (€0.05+ppm)\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
     msg.body = emsg2
     msg.reply_to = easynouto_email
     if not isBlank(email):
