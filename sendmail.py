@@ -45,7 +45,7 @@ def customer_email(email, ttype, desc, day_nr, pvm, time_frame, price, name, add
         emsg = emsg + " klo 14-17 \nTilaaja:\n"
     elif time_frame == "4":
         emsg = emsg + " klo 17-20 \nTilaaja:\n"
-    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone
+    emsg = emsg + name + "\n" + address + ", " + postcode + " " + city + "\nPuh: " + phone + "\nEmail: " + email
     if not isBlank(instructions):
         emsg = emsg + "\nOhjeet:\n" + instructions    
     emsg2 = emsg + "\n\nKiitos tilauksesta!\n\nEasynouto\nInfopuhelin: 0600391500 (€0.05+ppm)\nWhatsApp: 050 4656 001\nSähköposti: info@easynouto.fi"
