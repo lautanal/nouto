@@ -66,7 +66,7 @@ def ajanvaraus():
         p_extra = 20
 
     if not p_accepted:
-        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella")
+        return render_template("index.html", noutolaji=noutolaji, kuvaus=kuvaus, postinumero=postinumero, error="Postinumero hakualueen ulkopuolella", error2="Voit kokeilla tilata noudon omalle alueellesi infopuhelimestamme 0600391500")
 
     viikko_nr = cal.get_week()
     paivat = cal.get_days(viikko_nr)
