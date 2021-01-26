@@ -16,15 +16,15 @@
         <option value="3">30 min - alk 149€</option>
     </select>
     <br><br>
-
-   Noudettavat esineet suurin piirtein:<br><input type="text" name="kuvaus" maxlength="60" size="30" value={{ kuvaus }}><br>
+    Noudettavat esineet suurin piirtein:<br>
+    <input type="text" name="kuvaus" maxlength="60" size="30" value={{ kuvaus }}><br>
     <br>
-    Postinumero:<BR><input type="number" name="postinumero" value={{ postinumero }}><br>
+    Postinumero:<BR>
+    <input type="number" name="postinumero" value={{ postinumero }}><br>
     <br>
-    
     <input type="submit" value="Jatka ajanvaraukseen">
-    <br>
-    <div style="color:red;" >{{ error }}</div>
+    <br><br>
+    <div style="color:red;" >{{ error }}<br>{{ error2 }}</div>
   </form>
 </div>
 {% endblock content %}
