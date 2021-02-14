@@ -14,6 +14,7 @@ def prices(week_nr, day_id, noutolaji, city, p_extra):
         alin_hinta = 149
 
 # Pidemmän haun lisämaksu
+    alin_hinta += p_extra
     for i in range(20):
         hinnat[i] = hinnat[i] + p_extra
 
