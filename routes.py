@@ -32,7 +32,9 @@ def ajanvaraus():
         "03100": "Nummela", "03150": "Huhmari", "03220": "Tervalampi", "03250": "Ojakkala", "03300": "Otalampi",  
         "03320": "Selki", "03400": "Vihti", "03430": "Jokikunta", "03790": "Vihtijärvi",
         "04150": "Martinkylä", "04170": "Paippinen", "04240": "Talma",   
-        "04200": "Kerava", "04220": "Kerava", "04230": "Kerava", "04250": "Kerava", "04260": "Kerava-Savio", 
+        "04200": "Kerava", "04220": "Kerava", "04230": "Kerava", "04250": "Kerava", "04260": "Kerava", 
+        "04300": "Tuusula", "04310": "Tuusula", "04320": "Tuusula", "04330": "Lahela", "04340": "Tuusula", "04350": "Nahkela", "04360": "Tuusula", "04370": "Rusutjärvi",
+        "04380": "Tuusula", "04390": "Jäniksenlinna", "04500": "Kellokoski", "05400": "Jokela", "05430": "Nuppulinna",
         "04400": "Järvenpää", "04410": "Järvenpää", "04420": "Järvenpää", "04440": "Järvenpää", "04460": "Nummenkylä", "04480": "Haarajoki"
     }
 
@@ -207,6 +209,7 @@ def hinnat():
 
         return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=0, paivat=paivat, hinnat=hinnat)
 
+# Lisähinnat ja alennukset, seuraava viikko
 @app.route("/hinnats/<int:wnr>/<int:vdelta>")
 def hinnats(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -225,6 +228,7 @@ def hinnats(wnr, vdelta):
 
         return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
 
+# Lisähinnat ja alennukset, edellinen viikko
 @app.route("/hinnate/<int:wnr>/<int:vdelta>")
 def hinnate(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -243,6 +247,7 @@ def hinnate(wnr, vdelta):
 
         return render_template("hinnat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, hinnat=hinnat)
 
+# Lisähinnat, hintojen talletus
 @app.route("/lisahinnat/<int:wnr>/<int:vdelta>", methods=["post"])
 def lisahinnat(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -354,6 +359,7 @@ def vapaat():
 
         return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=0, paivat=paivat, offlist=offlist)
 
+# Vapaa-päivät ja slotit, seuraava viikko
 @app.route("/vapaats/<int:wnr>/<int:vdelta>")
 def vapaats(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -371,6 +377,7 @@ def vapaats(wnr, vdelta):
 
         return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, offlist=offlist)
 
+# Vapaa-päivät ja slotit, edellinen viikko
 @app.route("/vapaate/<int:wnr>/<int:vdelta>")
 def vapaate(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -388,6 +395,7 @@ def vapaate(wnr, vdelta):
 
         return render_template("vapaat.html", viikko_nr=viikko_nr, vdelta=vdelta, paivat=paivat, offlist=offlist)
 
+# Vapaa-päivät ja slotit, talletus
 @app.route("/vapaat/<int:wnr>/<int:vdelta>", methods=["post"])
 def vapaat_talletus(wnr, vdelta):
     if admins.admin_id() == 0:
@@ -441,10 +449,10 @@ def vapaat_talletus(wnr, vdelta):
         return render_template("vapaat.html", viikko_nr=wnr, vdelta=vdelta, paivat=paivat, offlist=offlist, msg="Vapaat päivitetty")
 
 # Kalenterin täyttö
-@app.route("/cal")
-def calfill():
-    cal.fill(2022, 1096, 2152)
-    return redirect("/")
+#@app.route("/cal")
+#def calfill():
+#    cal.fill(2022, 1096, 2152)
+#    return redirect("/")
 
 def isBlank (myString):
     return not (myString and myString.strip())
